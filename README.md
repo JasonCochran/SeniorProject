@@ -2,6 +2,10 @@
 Greg and Jason's senior project repo. Contains Useful links for research and tech information.
 
 ## Interesting predictive policing links
+###### Chicago crime data 2001 - present (updated daily... Maybe we can pull daily?) https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g
+###### Chicago strategic subjects list (anonymized but still useful possibly) https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List-Dashboard/wgnt-sjgb
+###### Chicago suicide study (need hard statistical data combined with Twitter maybe) https://link.springer.com/article/10.1007/BF00584047
+
 
 ## Algorithms links
 
@@ -15,6 +19,7 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### Python Linters: https://jeffknupp.com/blog/2016/12/09/how-python-linters-will-save-your-large-python-project/
 
 ## Useful research links
+###### Filtering Tweets by location (suicide) https://developer.twitter.com/en/docs/tutorials/filtering-tweets-by-location
 ###### Microservice design books https://www.icbf.gov.co/sites/default/files/microservices_designing_deploying.pdf
 ###### https://www.nginx.com/wp-content/uploads/2015/01/Building_Microservices_Nginx.pdf
 ###### http://nealford.com/downloads/Building_Microservice_Architectures_Neal_Ford.pdf
