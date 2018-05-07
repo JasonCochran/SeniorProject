@@ -1,6 +1,12 @@
 # SeniorProject
 Greg and Jason's senior project repo. Contains Useful links for research and tech information.
 
+## Installation instructions.
+###### Create a new folder: mkdir predpol
+###### Clone the git directory to that folder: cd predpol; git clone <url>
+###### Install a Python virtual environment with Python 3.6.5
+###### Source the requirements.txt file for packages for your virtual env 
+
 ## Interesting predictive policing links
 ###### Chicago crime data 2001 - present (updated daily... Maybe we can pull daily?) https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g
 ###### Chicago strategic subjects list (anonymized but still useful possibly) https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List-Dashboard/wgnt-sjgb
