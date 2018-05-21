@@ -1,6 +1,6 @@
 import flask
 app = flask.Flask('Demo Flask')
 
-@app.route('/example')
+@app.route('/')
 def example():
 	return "This is an example"
