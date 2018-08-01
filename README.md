@@ -7,15 +7,24 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### Install a Python virtual environment with Python 3.6.5
 ###### Source the requirements.txt file for packages for your virtual env 
 
+## Ideas for development order
+###### 1) Build the database
+###### 2) Setup docker deployment system to automate setup and testing
+###### 3) Create the front end GUI to view basic things form the database
+###### 4) Create prediction algorithm (PreCog)
+###### 5) Create caching layer for GUI, emphasize speed
+###### 6) Create additional data aggregators and more prediction abilities
+###### 7) Graduate
+
 ## Interesting predictive policing links
 ###### Chicago crime data 2001 - present (updated daily... Maybe we can pull daily?) https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g
 ###### Chicago strategic subjects list (anonymized but still useful possibly) https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List-Dashboard/wgnt-sjgb
 ###### Chicago suicide study (need hard statistical data combined with Twitter maybe) https://link.springer.com/article/10.1007/BF00584047
 
-
 ## Algorithms links
 
 ## Frameworks / tech stack links
+###### Really useful REST API link: https://scotch.io/tutorials/build-a-restful-api-with-flask-the-tdd-way
 ###### A useful CI/CD deployment software that might be nice to use. We could probably deploy with very little work. https://concourse-ci.org/
 ###### Open source graphing library (not sure about performance for large projects with this) https://plot.ly/
 ###### GIS Spatial Addition to PostGRES http://www.postgis.net/
