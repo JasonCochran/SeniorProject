@@ -1,0 +1,29 @@
+version: '3'
+services:
+   nginx:
+      build:
+         context: 
+      image: nginx
+      ports:
+         - "80:80"
+      restart: always
+      env_file:
+         - env_file
+      networks:
+         - db_nw
+      depends_on:
+         - postGIS
+   postGIS:
+      build:
+         context: postGIS
+      image: postgis
+      ports:
+         - "3306:3306"
+      restart: always
+      networks:
+         - db_nw
+      env_file:
+         - env_file
+networks:
+   db_nw:
+      driver: bridge
