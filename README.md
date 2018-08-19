@@ -10,7 +10,7 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ## Ideas for development order
 ###### 1) Build the database
 ###### 2) Setup docker deployment system to automate setup and testing
-###### 3) Create the front end GUI to view basic things form the database
+###### 3) Create the front end GUI to view basic things from the database
 ###### 4) Create prediction algorithm (PreCog)
 ###### 5) Create caching layer for GUI, emphasize speed
 ###### 6) Create additional data aggregators and more prediction abilities

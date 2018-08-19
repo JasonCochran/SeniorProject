@@ -9,6 +9,8 @@ services:
          - db_nw
       env_file:
          - env_file
+      volumes:
+         - ./postgres-data:/var/lib/postgresql/data
 networks:
    db_nw:
       driver: bridge
