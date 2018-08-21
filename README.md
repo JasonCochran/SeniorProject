@@ -2,19 +2,26 @@
 Greg and Jason's senior project repo. Contains Useful links for research and tech information.
 
 ## Installation instructions.
+###### Note: These are for production setup
 ###### Create a new folder: mkdir predpol
 ###### Clone the git directory to that folder: cd predpol; git clone <url>
-###### Install a Python virtual environment with Python 3.6.5
-###### Source the requirements.txt file for packages for your virtual env 
+###### Run 'docker-compose up --build'
 
 ## Ideas for development order
-###### 1) Build the database
+###### 1) Build the database -> PostGIS
 ###### 2) Setup docker deployment system to automate setup and testing
 ###### 3) Create the front end GUI to view basic things from the database
 ###### 4) Create prediction algorithm (PreCog)
 ###### 5) Create caching layer for GUI, emphasize speed
 ###### 6) Create additional data aggregators and more prediction abilities
 ###### 7) Graduate
+
+## Purpose for each directory
+###### dbLayer        - holds scripts to create and upload data to a PostGIS database using SQLAlchemy + GeoAlchemy
+###### webGUI         - Act as the GUI for the predictive policing software
+###### deployment     - Useful scripts and information for deployment
+###### cpdScraper     - Scrape the Chicago Police Department crime database daily for new information
+###### twittersuicide - Program to scrape Twitter for tweets that indicate possible suicide
 
 ## Interesting predictive policing links
 ###### Chicago crime data 2001 - present (updated daily... Maybe we can pull daily?) https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g

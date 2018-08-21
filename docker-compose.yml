@@ -1,7 +1,7 @@
 version: '3'
 services:
    postGIS:
-      image: mdillon/postgis
+      image: kartoza/postgis
       ports:
          - "5432:5432"
       restart: always
@@ -9,8 +9,16 @@ services:
          - db_nw
       env_file:
          - env_file
-      volumes:
-         - ./postgres-data:/var/lib/postgresql/data
+   dbLayer:
+      build:
+         context: dbLayer
+      image: nginx
+      ports:
+         - "81:80"
+      networks:
+         - db_nw
+      env_file:
+         - env_file
 networks:
    db_nw:
       driver: bridge
