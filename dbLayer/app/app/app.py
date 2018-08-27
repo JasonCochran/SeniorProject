@@ -5,5 +5,4 @@ import os, sys
 
 @app.route('/')
 def index():
-        return 'Pred Pol Database Abstraction Layer'
-
+        return 'Pred Pol Database Data Curation script. Purely used for uploading data to PostGIS.''
