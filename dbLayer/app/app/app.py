@@ -5,4 +5,4 @@ import os, sys
 
 @app.route('/')
 def index():
-        return 'Pred Pol Database Data Curation script. Purely used for uploading data to PostGIS.''
+        return 'Pred Pol Database Data Curation script. Purely used for uploading data to PostGIS.'
