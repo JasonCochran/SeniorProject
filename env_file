@@ -2,3 +2,4 @@ POSTGRES_USER=ppuser
 POSTGRES_PASS=1234
 POSTGRES_DBNAME=predpol
 POSTGRES_PORT=5432
+PGDATA="/var/lib/postgresql/data/pgdata"
