@@ -1,7 +1,7 @@
 version: '3'
 services:
    postGIS:
-      image: kartoza/postgis
+      image: kartoza/postgis:9.6-2.4
       ports:
          - "5432:5432"
       restart: always
@@ -10,11 +10,10 @@ services:
       env_file:
          - env_file
       volumes:
-         - postgres-data:/var/lib/postgresql/data/pgdata
-   dbLayer:
+         - ./postgres-data:/var/lib/postgresql/data/pgdata
+   dblayer:
       build:
          context: dbLayer
-      image: nginx
       ports:
          - "81:80"
       networks:
@@ -24,7 +23,6 @@ services:
    precog:
       build:
          context: precog
-      image: nginx
       ports:
          - "82:80"
       networks:

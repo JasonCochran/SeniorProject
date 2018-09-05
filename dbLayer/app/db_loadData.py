@@ -9,7 +9,9 @@ with open(filename, "r") as csvfile:
 #       yield next(datareader)
 	next(datareader)
 	count = 0
+	attempt = 0
 	for row in datareader:
+		attempt = attempt + 1
 		try:
 			tempInc = Incident()
 			tempInc.ID = row[0]
@@ -57,12 +59,14 @@ with open(filename, "r") as csvfile:
 			else:
 				tempInc.location = 0
 			db.session.add(tempInc)
+			db.session.commit()
+			count = count + 1
 		except Exception as e:
 			print(e)
+			db.session.rollback()
 		if count % 50000 == 0:
 			print(count)
-			db.session.commit()
-		count = count + 1
+		#	db.session.commit()
+	#	count = count + 1
 
-print(count)
-db.session.commit()
+print("Done: " + count)
