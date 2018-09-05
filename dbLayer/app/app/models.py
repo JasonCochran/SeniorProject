@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from geoalchemy2.types import Geometry
 from app import db
 
 class Incident(db.Model):

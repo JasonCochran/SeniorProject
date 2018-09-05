@@ -2,7 +2,7 @@ from app import db
 from app.models import Incident
 import csv
 
-filename = 'Crimes_-_2001_to_present.csv'
+filename = '/crimeCSV/Crimes_-_2001_to_present.csv'
 count = 0
 with open(filename, "r") as csvfile:
 	datareader = csv.reader(csvfile)

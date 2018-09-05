@@ -20,6 +20,8 @@ services:
          - db_nw
       env_file:
          - env_file
+      volumes:
+         - ./crimeCSV:/crimeCSV
    precog:
       build:
          context: precog
