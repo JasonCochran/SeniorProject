@@ -6,6 +6,7 @@ class Incident(db.Model):
 	_tablename_ = 'incident'
 	ID = db.Column(db.Integer, primary_key = True)
 	caseNumber = db.Column(db.String(15))
+#	date = db.Column(db.DateTime)
 	block = db.Column(db.String(132))
 	IUCR = db.Column(db.String(10))
 	primaryType = db.Column(db.String(132))

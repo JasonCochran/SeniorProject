@@ -16,7 +16,7 @@ with open(filename, "r") as csvfile:
 			tempInc = Incident()
 			tempInc.ID = row[0]
 			tempInc.caseNumber = row[1]
-        	        # Date is 2
+			# tempInc.date = row[2]
 			tempInc.block = row[3]
 			tempInc.IUCR = row[4]
 			tempInc.primaryType = row[5]
