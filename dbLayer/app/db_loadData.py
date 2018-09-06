@@ -55,7 +55,7 @@ with open(filename, "r") as csvfile:
 				tempInc.longitude = 0
 			
 			if str(row[21]).strip():
-				tempInc.location = row[21]
+				tempInc.location = "POINT(" +  row[19] + " " + row[20] + ")"
 			else:
 				tempInc.location = 0
 			db.session.add(tempInc)
