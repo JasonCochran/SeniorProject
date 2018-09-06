@@ -24,3 +24,10 @@ class Incident(db.Model):
 	latitude = db.Column(db.Float, default = '')
 	longitude = db.Column(db.Float, default = '')
 	location = db.Column(db.String(132), default = '')
+
+class Prediction(db.Model):
+	_tablename_ = 'prediction'
+	ID = db.Column(db.Integer, primary_key = True)
+	certainty = db.Column(db.Integer)
+	location = db.Column(db.String(132))
+
