@@ -2,11 +2,10 @@ from app import db
 from app.models import Incident
 import csv
 
-filename = '/crimeCSV/Crimes_-_2001_to_present.csv'
+filename = '/crimeCSV/crimeCleaned.csv'
 count = 0
 with open(filename, "r") as csvfile:
 	datareader = csv.reader(csvfile)
-#       yield next(datareader)
 	next(datareader)
 	count = 0
 	attempt = 0
@@ -57,16 +56,15 @@ with open(filename, "r") as csvfile:
 			if str(row[21]).strip():
 				tempInc.location = "POINT(" +  row[19] + " " + row[20] + ")"
 			else:
-				tempInc.location = 0
+				tempInc.location = "POINT(0 0)"
 			db.session.add(tempInc)
-			db.session.commit()
 			count = count + 1
 		except Exception as e:
 			print(e)
 			db.session.rollback()
 		if count % 50000 == 0:
 			print(count)
-		#	db.session.commit()
 	#	count = count + 1
 
+db.session.commit()
 print("Done: " + count)

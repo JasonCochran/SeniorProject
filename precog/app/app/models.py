@@ -30,4 +30,5 @@ class Prediction(db.Model):
 	ID = db.Column(db.Integer, primary_key = True)
 	certainty = db.Column(db.Integer)
 	location = db.Column(db.String(132))
+	type = db.Column(db.String(132))
 
