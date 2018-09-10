@@ -29,6 +29,15 @@ services:
          - db_nw
       env_file:
          - env_file
+   basicgui:
+      build:
+         context: webGUI
+      ports:
+         - "83:80"
+      networks:
+         - db_nw
+      env_file:
+         - env_file
 networks:
    db_nw:
       driver: bridge
