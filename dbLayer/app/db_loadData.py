@@ -8,9 +8,7 @@ with open(filename, "r") as csvfile:
 	datareader = csv.reader(csvfile)
 	next(datareader)
 	count = 0
-	attempt = 0
 	for row in datareader:
-		attempt = attempt + 1
 		try:
 			tempInc = Incident()
 			tempInc.ID = row[0]
@@ -62,9 +60,8 @@ with open(filename, "r") as csvfile:
 		except Exception as e:
 			print(e)
 			db.session.rollback()
-		if count % 50000 == 0:
+		if count % 100000 == 0:
+			db.session.commit()
 			print(count)
-	#	count = count + 1
-
 db.session.commit()
 print("Done: " + count)

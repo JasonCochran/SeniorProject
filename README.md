@@ -49,3 +49,14 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### https://www.nginx.com/wp-content/uploads/2015/01/Building_Microservices_Nginx.pdf
 ###### http://nealford.com/downloads/Building_Microservice_Architectures_Neal_Ford.pdf
 ###### Async microservice discussion http://eventuate.io/whyeventdriven.html
+
+## Greg's plan
+Chicago police data->postGIS->algorithm->web interface
+divide chicago into block sizes that reflect the precision of the crime location data
+map available crime data onto those geoblocks
+map additional factor data onto those geoblocks
+calculate information gain/entropy with regards to each attribute associated with all blocks containing a targeted crime
+sort attributes by information gain
+branch on the highest entropy attribute-record entropy and attribute
+repeat until the tree is finished, either all attributes used or all remaining attributes have low information gain
+run
