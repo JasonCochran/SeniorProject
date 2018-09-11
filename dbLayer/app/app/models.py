@@ -35,7 +35,12 @@ class Beat(db.Model):
 	district = db.Column(db.Integer)
 	geom = db.Column(Geometry('MULTIPOLYGON'))
 
-# class Prediction(db.Model):
+class Prediction(db.Model):
+	_tablename_ = 'prediction'
+	ID = db.Column(db.Integer, primary_key = True)
+	certainty = db.Column(db.Integer)
+	location = db.Column(Geometry('POINT'))
+	type = db.Column(db.String(132))
 
 class PoliceStation(db.Model):
 	_tablename_ = 'policestation'
@@ -58,3 +63,4 @@ class PoliceStation(db.Model):
 # class SexOffenders(db.Model):
 
 # class Districts(db.Model):
+
