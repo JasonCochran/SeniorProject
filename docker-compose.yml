@@ -31,6 +31,15 @@ services:
          - db_nw
       env_file:
          - env_file
+   stat_precog:
+      build:
+         context: stat_precog
+      ports:
+         - "84:80"
+      networks:
+         - db_nw
+      env_file:
+         - env_file
    basicgui:
       build:
          context: webGUI
