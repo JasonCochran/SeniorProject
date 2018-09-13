@@ -23,13 +23,13 @@ def runStats(numRows):
     	# X loop
         for y in np.linspace(0, 1, EWBoxes,endpoint=True):
         	# Y loop
-            p1x = originLat + (x*bbsize)
-    	    p1y = originLong + (y*bbsize)
-            p2x = originLat + (x*bbsize)  + bbsize
+            p1x = originLat - (x*bbsize)
+            p1y = originLong + (y*bbsize)
+            p2x = originLat - (x*bbsize)  - bbsize
             p2y = originLong + (y*bbsize)
-            p3x = originLat + (x*bbsize) + bbsize
+            p3x = originLat - (x*bbsize) - bbsize
             p3y = originLong + (y*bbsize) + bbsize
-            p4x = originLat + (x*bbsize)
+            p4x = originLat - (x*bbsize)
             p4y = originLong + (y*bbsize) + bbsize
 			# Create a selection box to get all crimes in a certain region
 			box = "POLYGON((" + str(p1x) + " " + str(p1y) + ", " + str(p2x) + " " + str(p2y) + ", " + str(p3x) + " " + str(p3y) \
