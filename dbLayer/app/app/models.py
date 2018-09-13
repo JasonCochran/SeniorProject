@@ -41,6 +41,15 @@ class Prediction(db.Model):
 	certainty = db.Column(db.Integer)
 	location = db.Column(Geometry('POINT'))
 	type = db.Column(db.String(132))
+	precog = db.Column(db.String(16)) # Who made the prediction
+	datetime = db.Column(db.DateTime) # When was the prediction made
+
+class Recommendation(db.Model):
+	_tablename_ = 'recommendation'
+	ID = db.Column(db.Integer, primary_key = True)
+	type = db.Column(db.String)
+	urgency = db.Column(db.Float)
+	location = db.Column(Geometry('POINT'))
 
 class PoliceStation(db.Model):
 	_tablename_ = 'policestation'
@@ -58,7 +67,7 @@ class PoliceStation(db.Model):
 #	yCoord = db.Column(
 #	lat = db.Column(
 #	long = db.Column(
-#	location = db.Column(
+	location = db.Column(Geometry('POINT'))
 
 # class SexOffenders(db.Model):
 
