@@ -50,6 +50,7 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### https://www.nginx.com/wp-content/uploads/2015/01/Building_Microservices_Nginx.pdf
 ###### http://nealford.com/downloads/Building_Microservice_Architectures_Neal_Ford.pdf
 ###### Async microservice discussion http://eventuate.io/whyeventdriven.html
+###### http://geopandas.org/gallery/plotting_with_geoplot.html
 
 ## Greg's plan
 Chicago police data->postGIS->algorithm->web interface

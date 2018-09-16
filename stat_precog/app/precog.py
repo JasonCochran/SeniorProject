@@ -19,23 +19,25 @@ def runStats(numRows):
 	EWBoxes = ( originLong - limitLong ) / bbsize
 	locations = {}
 
-    for x in np.linspace(0, 1, NSBoxes,endpoint=True):
-    	# X loop
-        for y in np.linspace(0, 1, EWBoxes,endpoint=True):
-        	# Y loop
-            p1x = originLat - (x*bbsize)
-            p1y = originLong + (y*bbsize)
-            p2x = originLat - (x*bbsize)  - bbsize
-            p2y = originLong + (y*bbsize)
-            p3x = originLat - (x*bbsize) - bbsize
-            p3y = originLong + (y*bbsize) + bbsize
-            p4x = originLat - (x*bbsize)
-            p4y = originLong + (y*bbsize) + bbsize
+	for x in np.arange(0, np.absolute(NSBoxes)):
+    		# X loop
+		for y in np.arange(0, np.absolute(EWBoxes)):
+        		# Y loop
+			print(x)
+			print(y)
+			p1x = originLat - (x*bbsize)
+			p1y = originLong + (y*bbsize)
+			p2x = originLat - (x*bbsize)  - bbsize
+			p2y = originLong + (y*bbsize)
+			p3x = originLat - (x*bbsize) - bbsize
+			p3y = originLong + (y*bbsize) + bbsize
+			p4x = originLat - (x*bbsize)
+			p4y = originLong + (y*bbsize) + bbsize
 			# Create a selection box to get all crimes in a certain region
 			box = "POLYGON((" + str(p1x) + " " + str(p1y) + ", " + str(p2x) + " " + str(p2y) + ", " + str(p3x) + " " + str(p3y) \
-                + ", " + str(p4x) + " " + str(p4y) + ", " + str(p1x) + " " + str(p1y) +  "))"
+                		+ ", " + str(p4x) + " " + str(p4y) + ", " + str(p1x) + " " + str(p1y) +  "))"
 			print(box)
-			result = db.session.query(Incident).filter(Incident.geom.contains(box)).count()
+			result = db.session.query(Incident).filter(Incident.location.contained(box)).count()
 
 			# Record how many crimes occur in each box
 			
