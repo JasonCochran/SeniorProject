@@ -21,7 +21,8 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ## Purpose for each directory
 ###### dbLayer        - holds scripts to create and upload data to a PostGIS database using SQLAlchemy + GeoAlchemy
 ###### webGUI         - Act as the GUI for the predictive policing software
-###### deployment     - Useful scripts and information for deployment
+###### precog         - Basic ML precog
+###### stats_precog   - Basic precog using simple statistics
 ###### cpdScraper     - Scrape the Chicago Police Department crime database daily for new information
 ###### twittersuicide - Program to scrape Twitter for tweets that indicate possible suicide
 
@@ -49,6 +50,7 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### https://www.nginx.com/wp-content/uploads/2015/01/Building_Microservices_Nginx.pdf
 ###### http://nealford.com/downloads/Building_Microservice_Architectures_Neal_Ford.pdf
 ###### Async microservice discussion http://eventuate.io/whyeventdriven.html
+###### http://geopandas.org/gallery/plotting_with_geoplot.html
 
 ## Greg's plan
 Chicago police data->postGIS->algorithm->web interface
