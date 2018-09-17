@@ -73,3 +73,14 @@ class PoliceStation(db.Model):
 
 # class Districts(db.Model):
 
+class CensusTracts(db.Model):
+	_tablename_ = "censustract"
+	ID = db.Column(db.Integer, primary_key = True)	
+	stateID = db.Column(db.Integer)
+	geom = db.Column(Geometry('MULTIPOLYGON'))
+	countyID = db.Column(db.Integer)
+	tractCE = db.Column(db.String(32))
+	geoID = db.Column(db.String(32))
+	name = db.Column(db.String(32))
+	nameLSAD = db.Column(db.String(32))
+	commarea = db.Column(db.Integer)
