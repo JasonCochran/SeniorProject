@@ -38,9 +38,18 @@ class Beat(db.Model):
 class Prediction(db.Model):
 	_tablename_ = 'prediction'
 	ID = db.Column(db.Integer, primary_key = True)
-	certainty = db.Column(db.Integer)
+	certainty = db.Column(db.Float)
 	location = db.Column(Geometry('POINT'))
 	type = db.Column(db.String(132))
+	precog = db.Column(db.String(16))
+	datetime = db.Column(db.DateTime)
+
+class Recommendation(db.Model):
+	_tablename_ = 'recommendation'
+	ID = db.Column(db.Integer, primary_key = True)
+	type = db.Column(db.String)
+	urgency = db.Column(db.Float)
+	location = db.Column(Geometry('POINT'))
 
 class PoliceStation(db.Model):
 	_tablename_ = 'policestation'
@@ -58,9 +67,20 @@ class PoliceStation(db.Model):
 #	yCoord = db.Column(
 #	lat = db.Column(
 #	long = db.Column(
-#	location = db.Column(
+	location = db.Column(Geometry('POINT'))
 
 # class SexOffenders(db.Model):
 
 # class Districts(db.Model):
 
+class CensusTracts(db.Model):
+	_tablename_ = "censustract"
+	ID = db.Column(db.Integer, primary_key = True)	
+	stateID = db.Column(db.Integer)
+	geom = db.Column(Geometry('MULTIPOLYGON'))
+	countyID = db.Column(db.Integer)
+	tractCE = db.Column(db.String(32))
+	geoID = db.Column(db.String(32))
+	name = db.Column(db.String(32))
+	nameLSAD = db.Column(db.String(32))
+	commarea = db.Column(db.Integer)
