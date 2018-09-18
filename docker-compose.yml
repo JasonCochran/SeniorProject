@@ -47,6 +47,17 @@ services:
          - db_nw
       env_file:
          - env_file
+   tileserver:
+      image: klokantech/tileserver-gl
+      ports:
+         - "85:80"
+      volumes:
+         - ./data:/data
+   mapbox:
+      build:
+         context: mapbox
+      ports:
+         - "80:80"
 networks:
    db_nw:
       driver: bridge
