@@ -53,11 +53,15 @@ services:
          - "85:80"
       volumes:
          - ./data:/data
+      networks:
+         - db_nw
    mapbox:
       build:
          context: mapbox
       ports:
          - "80:80"
+      networks:
+         - db_nw
 networks:
    db_nw:
       driver: bridge
