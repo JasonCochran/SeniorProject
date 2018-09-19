@@ -53,7 +53,7 @@
 			latitude = document.getElementById("Latitude").value;
 			display_map(longitude, latitude);
 		}
-		function display_map(longitude=41.8781, latitude=-87.6298) {
+		function display_map(longitude=-87.6298, latitude=41.8781) {
 			mapboxgl.accessToken = "{{ mapbox_access_token }}"
 			var map = new mapboxgl.Map({
 			container: 'map',
