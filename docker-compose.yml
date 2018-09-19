@@ -39,7 +39,8 @@ services:
       env_file:
          - env_file
    tileserver:
-      image: klokantech/tileserver-gl
+      build:
+         context: tileserver-gl
       ports:
          - "85:80"
       volumes:

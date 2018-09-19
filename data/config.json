@@ -29,6 +29,17 @@
            42.297
          ]
        }
+     },
+     "dark-matter-gl-style": {
+       "style": "dark-matter-gl-style/style.json",
+       "tilejson": {
+         "bounds": [
+           -88.505,
+           41.339,
+           -87.066,
+           42.297
+         ]
+       }
      }
    },
    "data": {
