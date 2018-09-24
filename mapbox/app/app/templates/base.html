@@ -8,7 +8,7 @@
 
 {% block navbar %}
     <div class="navbar navbar-inverse" role="navigation">
-        <div class="container">
+        <!--<div class="container"> -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                 </button>
             <a class="navbar-brand" href="/" style="padding:0px;">
-              <!-- <img src="{{ url_for('static', filename='kraken.jpg') }}" style="height:100%;display:inline-block;"> --> 
+              <img src="{{ url_for('static', filename='kraken.jpg') }}" style="height:100%;display:inline-block;">
               <span> Pre Cog </span>
             </a>
             </div>
@@ -29,11 +29,10 @@
                     <li><a href="/admin">Admin</a></li>
                 </ul>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 {% endblock %}
 
 {% block content %}
       {% block page_content %}{% endblock %}
 {% endblock %}
-

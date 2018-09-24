@@ -48,6 +48,7 @@
 			}
 			
 			function display_map(longitude=-87.6298, latitude=41.8781) {
+				mapboxgl.accessToken = "{{ mapbox_access_token }}"
 				var map = new mapboxgl.Map({
 					container: 'map',
 					style: 'http://localhost:85/styles/dark-matter-gl-style/style.json',
