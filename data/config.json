@@ -1,0 +1,50 @@
+{
+   "options": {
+     "paths": {
+       "root": "/usr/src/app/node_modules/tileserver-gl-styles",
+       "fonts": "fonts",
+       "styles": "styles",
+       "mbtiles": "/data"
+     }
+   },
+   "styles": {
+     "klokantech-basic": {
+       "style": "klokantech-basic/style.json",
+       "tilejson": {
+         "bounds": [
+           -88.505,
+           41.339,
+           -87.066,
+           42.297
+         ]
+       }
+     },
+     "osm-bright": {
+       "style": "osm-bright/style.json",
+       "tilejson": {
+         "bounds": [
+           -88.505,
+           41.339,
+           -87.066,
+           42.297
+         ]
+       }
+     },
+     "dark-matter-gl-style": {
+       "style": "dark-matter-gl-style/style.json",
+       "tilejson": {
+         "bounds": [
+           -88.505,
+           41.339,
+           -87.066,
+           42.297
+         ]
+       }
+     }
+   },
+   "data": {
+     "v3": {
+       "mbtiles": "osm-2018-05-21-v3.8-illinois_chicago.mbtiles"
+     }
+   }
+ }

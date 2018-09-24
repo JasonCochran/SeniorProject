@@ -6,6 +6,9 @@ Greg and Jason's senior project repo. Contains Useful links for research and tec
 ###### Clone the git directory: git clone <repo url>
 ###### Run 'docker-compose up --build'
 ###### Download the Chicago crime data in CSV format and put it in the 'crimeCSV' folder
+###### Download https://openmaptiles.com/downloads/tileset/osm/north-america/us/illinois/chicago/
+######         and put it in the data folder
+###### Run crimecleaning.py in the root directory
 ###### Run db_create.py and db_load.py in the dblayer container
 ###### Do work (if you delete the postGIS container you have to re-create and re-load the data)
 
