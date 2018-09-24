@@ -64,4 +64,4 @@ with open(filename, "r") as csvfile:
 			db.session.commit()
 			print(count)
 db.session.commit()
-print("Done: " + count)
+print("Done: " + str(count))

@@ -28,19 +28,20 @@
 
 {% block page_content %}
 		<!--<div class="container"> -->
-			<div class="row">
-  				<div class="col-md-2">
-  					<input class="inputBox" type="number" id="Longitude" placeholder="Enter Longitude" />
-					<input class="inputBox" type="number" id="Latitude" placeholder="Enter Latitude" />
-					<button class="button" onclick="getLonLat()"> Submit</button>
-				</div>
- 			 	<div class="col-md-10">
- 	 				<div id='map' style='width: 100%; height: 725px;'></div> 			 		
- 			 	</div>
+		<div class="row">
+  			<div class="col-md-2">
+  				<input class="inputBox" type="number" id="Longitude" placeholder="Enter Longitude" />
+				<input class="inputBox" type="number" id="Latitude" placeholder="Enter Latitude" />
+				<button class="button" onclick="getLonLat()"> Submit</button>
 			</div>
-		
+ 		 	<div class="col-md-10">
+ 	 			<div id='map' style='width: 100%; height: 725px;'></div> 			 		
+			</div>
+		</div>
+
 		<script>
 			var longitude, latitude;
+
 			function getLonLat(){
 				longitude = document.getElementById("Longitude").value;
 				latitude = document.getElementById("Latitude").value;

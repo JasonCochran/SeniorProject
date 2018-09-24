@@ -29,4 +29,4 @@ with open(filename, "r") as csvfile:
 			db.session.rollback()
 
 db.session.commit()
-print("Done: " + count)
+print("Done: " + str(count))

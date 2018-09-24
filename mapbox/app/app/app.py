@@ -5,10 +5,8 @@ import os, sys, requests
 
 @app.route('/',methods=['GET','POST'])
 def my_maps():
-	# Can we request from dblayer:81 ?? It should be in the same Docker network
-	response = requests.get('172.18.0.7:81/jsonData/test.json')
-	#print(response.json)
-	return render_template('index.html')
+	response = requests.get('http://dblayer:80/jsonData/test.json')
+	return render_template('index.html', data = response.json())
 
 @app.route('/recommendations', methods=['GET','POST'])
 def recommendation():
