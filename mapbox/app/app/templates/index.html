@@ -4,10 +4,11 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css' )}}">
 	<style>
 		.inputBox {
-		    width: 80%;
-		    padding: 12px 20px;
+		    width: 70%;
+		    padding: 12px 5px;
 		    margin: 8px 0;
 		    box-sizing: border-box;
 		}
@@ -27,12 +28,13 @@
 {% endblock %}
 
 {% block page_content %}
-		<!--<div class="container"> -->
 		<div class="row">
   			<div class="col-md-2">
   				<input class="inputBox" type="number" id="Longitude" placeholder="Enter Longitude" />
 				<input class="inputBox" type="number" id="Latitude" placeholder="Enter Latitude" />
 				<button class="button" onclick="getLonLat()"> Submit</button>
+				<input class="inputBox" type="number" id="Address" placeholder="Enter Address" />
+				<button class="button" onclick="getAddress()"> Submit</button>
 			</div>
  		 	<div class="col-md-10">
  	 			<div id='map' style='width: 100%; height: 725px;'></div> 			 		
@@ -40,15 +42,26 @@
 		</div>
 
 		<script>
-			var longitude, latitude;
+			// Set some default variable values
+			var longitude = -87.6298;
+			var latitude = 41.8781;
+			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
+			var timeStart;
+			var timeStop;
 
 			function getLonLat(){
 				longitude = document.getElementById("Longitude").value;
 				latitude = document.getElementById("Latitude").value;
-				display_map(longitude, latitude);
+				display_map();
+			}
+
+			// Do geocoding of address to lat/long
+			function getAddress() {
+				address = null;
+				display_map();
 			}
 			
-			function display_map(longitude=-87.6298, latitude=41.8781) {
+			function display_map() {
 				var map = new mapboxgl.Map({
 					container: 'map',
 					style: 'http://localhost:85/styles/dark-matter-gl-style/style.json',

@@ -17,3 +17,5 @@
 #### Forcing Mapbox JS GL to use custom server https://stackoverflow.com/questions/45888989/how-to-use-openmaptiles-server-for-mapbox-gl-js
 #### Adding Mapbox to Flask https://pengoox.pythonanywhere.com/How_to_Add_Maps_to_Flask_Web_App_with_Mapbox/
 #### JS Code Examples to create layers https://www.mapbox.com/mapbox-gl-js/example/toggle-layers/
+#### Caching JSON https://www.codebyamir.com/blog/a-web-developers-guide-to-browser-caching
+#### Library to cache JSON client side https://github.com/jeremydurham/persist-js

@@ -5,6 +5,7 @@ import os, sys, requests
 
 @app.route('/',methods=['GET','POST'])
 def my_maps():
+	# TODO: need to change this to be dynamic
 	response = requests.get('http://dblayer:80/jsonData/test.json')
 	return render_template('index.html', data = response.json())
 
