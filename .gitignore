@@ -3,3 +3,5 @@ env_file
 dbLayer/app/Crimes_-_2001_to_present.csv
 postgres-data/
 crimeCSV/
+*.pyc
+
