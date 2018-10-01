@@ -1,11 +1,22 @@
 from flask import Flask, render_template
 from werkzeug import secure_filename
 from app import app, db, models
-import os, sys
+import os, sys, requests
 
 @app.route('/',methods=['GET','POST'])
 def my_maps():
+	# TODO: need to change this to be dynamic
+	response = requests.get('http://dblayer:80/jsonData/test.json')
+	return render_template('index.html', data = response.json())
 
- #  mapbox_access_token = 'pk.eyJ1IjoibWV0cmljb24iLCJhIjoiY2l3eTQxMWl3MDBmYTJ6cWg3YmZtdjdsMSJ9.2vDbTw3ysscpy3YWkHo6aA'
-  mapbox_access_token = ''
-  return render_template('index.html', mapbox_access_token=mapbox_access_token)
+@app.route('/recommendations', methods=['GET','POST'])
+def recommendation():
+	return render_template('recommendations.html')
+
+@app.route('/urgent', methods=['GET','POST'])
+def urgent():
+	return render_template('urgent.html')
+
+@app.route('/admin', methods=['GET','POST'])
+def admin():
+	return render_template('admin.html')

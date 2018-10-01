@@ -19,7 +19,7 @@ services:
       env_file:
          - env_file
       volumes:
-         - ./crimeCSV:/crimeCSV
+         - ./dbLayer/app:/crimeCSV
    precog:
       build:
          context: precog
@@ -29,6 +29,8 @@ services:
          - db_nw
       env_file:
          - env_file
+      volumes:
+         - ./precog/app:/app
    stat_precog:
       build:
          context: stat_precog
@@ -38,6 +40,8 @@ services:
          - db_nw
       env_file:
          - env_file
+      volumes:
+         - ./stat_precog/app:/app
    tileserver:
       build:
          context: tileserver-gl
@@ -57,3 +61,4 @@ services:
 networks:
    db_nw:
       driver: bridge
+

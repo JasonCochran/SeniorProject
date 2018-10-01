@@ -1,0 +1,10 @@
+.navbar.navbar-default {
+  padding: 0px 0;
+  background: rgba(0, 0, 0, .1);
+  border: none;
+}
+
+.body {
+	background-color: #CECECF;
+	color: #CECECF;
+}
