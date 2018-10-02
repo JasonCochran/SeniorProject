@@ -19,7 +19,8 @@ services:
       env_file:
          - env_file
       volumes:
-         - ./dbLayer/app:/crimeCSV
+         - ./dbLayer/app:/app
+         - ./crimeCSV:/crimeCSV
    precog:
       build:
          context: precog

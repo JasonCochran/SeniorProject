@@ -5,36 +5,16 @@
 	<script src='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css' )}}">
-	<style>
-		.inputBox {
-		    width: 70%;
-		    padding: 12px 5px;
-		    margin: 8px 0;
-		    box-sizing: border-box;
-		}
-		.button {
-		    background-color: #4CAF50;
-		    border: none;
-		    color: white;
-		    padding: 15px 32px;
-		    text-align: center;
-		    text-decoration: none;
-		    display: inline-block;
-		    font-size: 16px;
-		    margin: 4px 2px;
-		    cursor: pointer;
-		}
-	</style>
 {% endblock %}
 
 {% block page_content %}
 		<div class="row">
   			<div class="col-md-2">
-  				<input class="inputBox" type="number" id="Longitude" placeholder="Enter Longitude" />
-				<input class="inputBox" type="number" id="Latitude" placeholder="Enter Latitude" />
+  				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
+				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
 				<button class="button" onclick="getLonLat()"> Submit</button>
-				<input class="inputBox" type="number" id="Address" placeholder="Enter Address" />
-				<button class="button" onclick="getAddress()"> Submit</button>
+				<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
+				<button class="button" onclick="geocode()"> Submit</button>
 			</div>
  		 	<div class="col-md-10">
  	 			<div id='map' style='width: 100%; height: 725px;'></div> 			 		
@@ -56,11 +36,26 @@
 			}
 
 			// Do geocoding of address to lat/long
-			function getAddress() {
-				address = null;
-				display_map();
-			}
-			
+		    function geocode() {
+		      $.ajax({
+		        url: 'http://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address='+document.getElementById("Address").value+'&benchmark=4&format=jsonp',
+		        dataType: 'jsonp',
+		        success: function(response) {
+		          // using the response, we can grab the latitude and longitude
+		          // 41.867   -87.619
+		          console.log(address);
+		          latitude = response.result.addressMatches[0].coordinates.x;
+		          longitude = response.result.addressMatches[0].coordinates.y;
+		          console.log(longitude);
+		          console.log(latitude);
+		          display_map();
+		        },
+		        error: function(error) {
+		          console.log(error);
+		        }
+		      });
+		    }
+
 			function display_map() {
 				var map = new mapboxgl.Map({
 					container: 'map',
@@ -100,6 +95,7 @@
 				            break;
 				        }
 				    }
+				    /*
 				    map.addLayer({
 				        'id': '3d-buildings',
 				        'source': 'composite',
@@ -124,6 +120,7 @@
 				            'fill-extrusion-opacity': .6
 				        }
 				    }, labelLayerId);
+				    */
 				});
 			}
 			display_map();
