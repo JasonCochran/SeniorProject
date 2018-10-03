@@ -13,6 +13,7 @@
 
 		<div class='map-overlay top'>
 		    <div class='map-overlay-inner'>
+		    	<h4>Search</h4>
 	  			<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
 				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
 				<button class="button" onclick="getLonLat()"> Submit</button>
@@ -20,10 +21,7 @@
 				<button class="button" onclick="geocode()"> Submit</button>
 		    </div>
 		    <div class='map-overlay-inner'>
-		        <div id='legend' class='legend'>
-		            <div class='bar'></div>
-		            <div>Magnitude (m)</div>
-		        </div>
+		        <h4>Select precog</h4>
 		    </div>
 		</div>
 
@@ -62,7 +60,6 @@
 		        dataType: 'jsonp',
 		        success: function(response) {
 		          // using the response, we can grab the latitude and longitude
-		          // 41.867   -87.619
 		          longitude = parseFloat( response.result.addressMatches[0].coordinates.x );
 		          latitude = parseFloat( response.result.addressMatches[0].coordinates.y );
 		          display_map();
@@ -89,8 +86,6 @@
 				            break;
 				        }
 				    }
-					
-
 					// Create new layers here
 				});
 			}
