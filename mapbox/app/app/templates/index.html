@@ -8,19 +8,41 @@
 {% endblock %}
 
 {% block page_content %}
-		<div class="row">
-  			<div class="col-md-2">
-  				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
+
+
+		<div id='map'></div>
+
+		<div class='map-overlay top'>
+		    <div class='map-overlay-inner'>
+	  			<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
 				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
 				<button class="button" onclick="getLonLat()"> Submit</button>
 				<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
 				<button class="button" onclick="geocode()"> Submit</button>
-			</div>
- 		 	<div class="col-md-10">
- 	 			<div id='map' style='width: 100%; height: 725px;'></div> 			 		
+		    </div>
+		    <div class='map-overlay-inner'>
+		        <div id='legend' class='legend'>
+		            <div class='bar'></div>
+		            <div>Magnitude (m)</div>
+		        </div>
+		    </div>
+		</div>
+<!--
+		<div class="container-fluid">
+			<div class="row">
+	  			<div class="col-md-2">
+	  				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
+					<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
+					<button class="button" onclick="getLonLat()"> Submit</button>
+					<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
+					<button class="button" onclick="geocode()"> Submit</button>
+				</div>
+	 		 	<div class="col-md-10">
+	 	 			<div class="map" id='map'></div> 			 		
+				</div>
 			</div>
 		</div>
-
+-->
 		<script>
 			// Set some default variable values
 			var longitude = -87.6298;
@@ -37,15 +59,16 @@
 
 			// Do geocoding of address to lat/long
 		    function geocode() {
+		    	address = document.getElementById("Address").value;
 		      $.ajax({
-		        url: 'http://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address='+document.getElementById("Address").value+'&benchmark=4&format=jsonp',
+		        url: 'http://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address='+address+'&benchmark=4&format=jsonp',
 		        dataType: 'jsonp',
 		        success: function(response) {
 		          // using the response, we can grab the latitude and longitude
 		          // 41.867   -87.619
-		          console.log(address);
 		          latitude = response.result.addressMatches[0].coordinates.x;
 		          longitude = response.result.addressMatches[0].coordinates.y;
+		          console.log(address);
 		          console.log(longitude);
 		          console.log(latitude);
 		          display_map();
@@ -74,7 +97,7 @@
 		  			.addTo(map);
 		  		// Navigation marker at top-left corner
 		  		var nav = new mapboxgl.NavigationControl();
-		  			map.addControl(nav, 'top-left');
+		  			map.addControl(nav, 'top-right');
 		  		// change false to true, to get your location. Then, enable location in the browser.
 		  		map.addControl(new mapboxgl.GeolocateControl({
 		    			positionOptions: {

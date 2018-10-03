@@ -59,6 +59,8 @@ services:
          - "80:80"
       networks:
          - db_nw
+      volumes:
+         - ./mapbox/app:/app
 networks:
    db_nw:
       driver: bridge
