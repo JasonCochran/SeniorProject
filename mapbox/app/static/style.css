@@ -1,10 +1,76 @@
-.navbar.navbar-default {
-  padding: 0px 0;
-  background: rgba(0, 0, 0, .1);
-  border: none;
+html {
+    height: 100%;
+    width: 100vw;
+    box-sizing: border-box;
 }
 
-.body {
-	background-color: #CECECF;
-	color: #CECECF;
+body {
+	background-color: #2A2C3A;
+	min-height: 100%;
+	box-sizing: border-box;
+}
+
+.navbar.navbar-inverse {
+  min-height: 8vh !important;
+  padding: 0px 0;
+  background: #252525;
+  border: none;
+  margin-bottom: 0px;
+  color: #252525;
+}
+
+.map-overlay {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 25%;
+    top: 8vh;
+    left: 0;
+    padding: 20px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+#map {
+  position: absolute;
+  top: 8vh;
+  bottom:0;
+  width:100%;
+}
+
+.inputBox {
+    width: 90px;
+    padding: 8px 7px;
+    margin: 8px 5;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #337036;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
