@@ -56,8 +56,8 @@ body {
 }
 
 .inputBox {
-    width: 50%;
-    padding: 12px 10px;
+    width: 90px;
+    padding: 8px 7px;
     margin: 8px 5;
     box-sizing: border-box;
 }
@@ -66,11 +66,11 @@ body {
     background-color: #337036;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 12px;
     margin: 4px 2px;
     cursor: pointer;
 }
