@@ -31,8 +31,7 @@
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
-			var timeStart;
-			var timeStop;
+			var markers = new Array();
 
 			var map = new mapboxgl.Map({
 				container: 'map',
@@ -76,6 +75,8 @@
 				var marker = new mapboxgl.Marker()
 			  		.setLngLat([longitude,latitude])
 			  		.addTo(map);
+
+			  	markers.push(marker);
 				
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
