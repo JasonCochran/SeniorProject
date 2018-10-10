@@ -22,11 +22,10 @@
 				<button class="button" onclick="geocode()"> Submit</button>
 		    </div>
 		    <div class='map-overlay-inner'>
-		        <h4>Year Selection: </h4> <output  id="year_val_disp"></output>
-		        <h4>Note: Anything after 2018 is a prediction.</h4>
+		        <h5>Year Selection: </h5> <output  id="year_val_disp"></output>
 		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
-
-		        <h4>Month Selection: </h4> <label id='month'></label>
+		        <h6>Note: Anything after 2018 is a prediction.</h6>
+		        <h5>Month Selection: </h5> <output id='month'></output>
 		        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
 		    </div>
 		   	<div class='map-overlay-inner'>
@@ -34,12 +33,10 @@
 		</div>
 
 		<script>
-			// Set some default variable values
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
 			var markers = new Array();
-
 			var months = [
 			    'January',
 			    'February',
