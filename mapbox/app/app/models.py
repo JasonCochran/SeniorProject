@@ -35,14 +35,20 @@ class Beat(db.Model):
 	district = db.Column(db.Integer)
 	geom = db.Column(Geometry('MULTIPOLYGON'))
 
-class Prediction(db.Model):
-	_tablename_ = 'prediction'
+class PreCogRun(db.Model):
+	_tablename_ = 'precogrun'
 	ID = db.Column(db.Integer, primary_key = True)
-	certainty = db.Column(db.Float)
-	location = db.Column(Geometry('POINT'))
 	type = db.Column(db.String(132))
 	precog = db.Column(db.String(16))
 	datetime = db.Column(db.DateTime)
+
+class Prediction(db.Model):
+	_tablename_ = 'prediction'
+	ID = db.Column(db.Integer, primary_key = True)
+	precogrun = db.Column(db.Integer, db.ForeignKey(PreCogRun.ID))
+	certainty = db.Column(db.Float)
+	location = db.Column(Geometry('POINT'))
+	datetime = db.Column(db.DateTime)	
 
 class Recommendation(db.Model):
 	_tablename_ = 'recommendation'

@@ -13,8 +13,8 @@
 
 		<div class='map-overlay top'>
 		    <div class='map-overlay-inner'>
-		    	<h4>Search</h4>
-		  		<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
+				<h4>Search</h4>
+				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
 				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
 				<button class="button" onclick="getLonLat()"> Submit</button>
 				<br>
@@ -22,17 +22,40 @@
 				<button class="button" onclick="geocode()"> Submit</button>
 		    </div>
 		    <div class='map-overlay-inner'>
-		        <h4>Select precog</h4>
+		        <h5>Year Selection: </h5> <output  id="year_val_disp"></output>
+		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
+		        <h6>Note: Anything after 2018 is a prediction.</h6>
+		        <h5>Month Selection: </h5> <output id='month'></output>
+		        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
+		    </div>
+		   	<div class='map-overlay-inner'>
 		    </div>
 		</div>
 
 		<script>
-			// Set some default variable values
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
-			var timeStart;
-			var timeStop;
+			var markers = new Array();
+			var months = [
+			    'January',
+			    'February',
+			    'March',
+			    'April',
+			    'May',
+			    'June',
+			    'July',
+			    'August',
+			    'September',
+			    'October',
+			    'November',
+			    'December'
+			];
+
+			document.getElementById('slider').addEventListener('input', function(e) {
+		        var month = parseInt(e.target.value, 10);
+		        document.getElementById('month').textContent = months[month];
+	        });
 
 			var map = new mapboxgl.Map({
 				container: 'map',
@@ -76,6 +99,8 @@
 				var marker = new mapboxgl.Marker()
 			  		.setLngLat([longitude,latitude])
 			  		.addTo(map);
+
+			  	markers.push(marker);
 				
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
@@ -88,6 +113,33 @@
 				        }
 				    }
 					// Create new layers here
+					
+				    map.addLayer({
+				        'id': '3d-buildings',
+				        'source': 'composite',
+				        'source-layer': 'building',
+				        'filter': ['==', 'extrude', 'true'],
+				        'type': 'fill-extrusion',
+				        'minzoom': 15,
+				        'paint': {
+				            'fill-extrusion-color': '#aaa',
+
+				            // use an 'interpolate' expression to add a smooth transition effect to the
+				            // buildings as the user zooms in
+				            'fill-extrusion-height': [
+				                "interpolate", ["linear"], ["zoom"],
+				                15, 0,
+				                15.05, ["get", "height"]
+				            ],
+				            'fill-extrusion-base': [
+				                "interpolate", ["linear"], ["zoom"],
+				                15, 0,
+				                15.05, ["get", "min_height"]
+				            ],
+				            'fill-extrusion-opacity': .6
+				        }
+				    }, labelLayerId);
+
 				});
 			}
 
