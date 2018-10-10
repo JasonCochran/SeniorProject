@@ -23,7 +23,13 @@
 		    </div>
 		    <div class='map-overlay-inner'>
 		        <h4>Year Selection: </h4> <output  id="year_val_disp"></output>
+		        <h4>Note: Anything after 2018 is a prediction.</h4>
 		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
+
+		        <h4>Month Selection: </h4> <label id='month'></label>
+		        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
+		    </div>
+		   	<div class='map-overlay-inner'>
 		    </div>
 		</div>
 
@@ -33,6 +39,26 @@
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
 			var markers = new Array();
+
+			var months = [
+			    'January',
+			    'February',
+			    'March',
+			    'April',
+			    'May',
+			    'June',
+			    'July',
+			    'August',
+			    'September',
+			    'October',
+			    'November',
+			    'December'
+			];
+
+			document.getElementById('slider').addEventListener('input', function(e) {
+		        var month = parseInt(e.target.value, 10);
+		        document.getElementById('month').textContent = months[month];
+	        });
 
 			var map = new mapboxgl.Map({
 				container: 'map',
