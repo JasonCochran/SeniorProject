@@ -17,3 +17,6 @@ WTForms==2.1
 xlrd==1.1.0
 psycopg2-binary
 geoalchemy2
+sklearn
+numpy
+scipy
