@@ -38,11 +38,17 @@ class Beat(db.Model):
 class Prediction(db.Model):
 	_tablename_ = 'prediction'
 	ID = db.Column(db.Integer, primary_key = True)
+	precogrun = db.Column(db.Integer, db.ForeignKey(PreCogRun.ID))
 	certainty = db.Column(db.Float)
 	location = db.Column(Geometry('POINT'))
+	datetime = db.Column(db.DateTime)
+
+class PreCogRun(db.Model):
+	_tablename_ = 'precogrun'
+	ID = db.Column(db.Integer, primary_key = True)
 	type = db.Column(db.String(132))
 	precog = db.Column(db.String(16))
-	datetime = db.Column(db.DateTime)
+	datetime = db.Column(db.DateTime)		
 
 class Recommendation(db.Model):
 	_tablename_ = 'recommendation'

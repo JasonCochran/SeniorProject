@@ -22,7 +22,8 @@
 				<button class="button" onclick="geocode()"> Submit</button>
 		    </div>
 		    <div class='map-overlay-inner'>
-		        <h4>Select precog</h4>
+		        <h4>Year Selection: </h4> <output  id="year_val_disp"></output>
+		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
 		    </div>
 		</div>
 
