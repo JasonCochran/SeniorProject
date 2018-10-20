@@ -21,13 +21,15 @@
 				<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
 				<button class="button" onclick="geocode()"> Submit</button>
 		    </div>
+
 		    <div class='map-overlay-inner'>
-		        <h5>Year Selection: </h5> <output  id="year_val_disp"></output>
-		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
+		        <h5>Year Selection: <output  id="year_val_disp"></output> </h5>
+		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028">
 		        <h6>Note: Anything after 2018 is a prediction.</h6>
-		        <h5>Month Selection: </h5> <output id='month'></output>
-		        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
+		        <h5>Month Selection: <output id='month_val_disp'></output> </h5>
+		        <input id='month_val' type='range' min='0' max='11' step='1' value='0' />
 		    </div>
+		    
 		   	<div class='map-overlay-inner'>
 		    </div>
 		</div>
@@ -38,25 +40,25 @@
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
 			var markers = new Array();
 			var months = [
-			    'January',
-			    'February',
-			    'March',
-			    'April',
-			    'May',
-			    'June',
-			    'July',
-			    'August',
-			    'September',
-			    'October',
-			    'November',
-			    'December'
+			    'January', 'February', 'March', 'April', 'May', 'June',
+			    'July', 'August', 'September', 'October', 'November', 'December'
 			];
 
-			document.getElementById('slider').addEventListener('input', function(e) {
+			// Set the slider disp text values even before user moves the slider
+			document.getElementById('year_val_disp').textContent = 2018;
+			document.getElementById('month_val_disp').textContent = months[0];
+			// Event calls for when we change the sliders
+			document.getElementById('month_val').addEventListener('input', function(e) {
 		        var month = parseInt(e.target.value, 10);
-		        document.getElementById('month').textContent = months[month];
+		        document.getElementById('month_val_disp').textContent = months[month];
+		        // Every time we change update the data
+	        });
+			document.getElementById('year_val').addEventListener('input', function(e) {
+		        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+		        // Every time we change update the data
 	        });
 
+			// Create map
 			var map = new mapboxgl.Map({
 				container: 'map',
 				style: 'http://localhost:85/styles/dark-matter-gl-style/style.json',
@@ -94,6 +96,7 @@
 		      });
 		    }
 
+		    // Function to call to udpate data, markers, and layers
 		    function display_map() {
 				// display a blue marker
 				var marker = new mapboxgl.Marker()
@@ -113,7 +116,8 @@
 				        }
 				    }
 					// Create new layers here
-					
+
+					// 3D Building layer
 				    map.addLayer({
 				        'id': '3d-buildings',
 				        'source': 'composite',
@@ -142,7 +146,6 @@
 
 				});
 			}
-
 		</script>
 
 {% endblock %}
