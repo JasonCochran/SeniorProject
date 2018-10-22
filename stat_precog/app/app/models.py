@@ -69,10 +69,12 @@ class PoliceStation(db.Model):
 	phone = db.Column(db.String(32))
 	fax = db.Column(db.String(32))
 	tty = db.Column(db.String(32))
-#	xCoord = db.Column(
-#	yCoord = db.Column(
-#	lat = db.Column(
-#	long = db.Column(
+	location = db.Column(Geometry('POINT'))
+
+class Recommendation(db.Model):
+	_tablename_ = 'recommendation'
+	id = db.Column(db.Integer, primary_key = True)
+	recommendation = db.Column(db.String(132))
 	location = db.Column(Geometry('POINT'))
 
 # class SexOffenders(db.Model):
