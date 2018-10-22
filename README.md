@@ -64,3 +64,7 @@ sort attributes by information gain
 branch on the highest entropy attribute-record entropy and attribute
 repeat until the tree is finished, either all attributes used or all remaining attributes have low information gain
 run
+
+## Useful commands
+* Login to db (must be logged into PostGIS container): psql -h 127.0.0.1 -d predpol -U ppuser
+* Login into container: docker exec -it [container name] bash
