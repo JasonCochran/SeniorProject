@@ -34,6 +34,7 @@
 			</div>
 		</div>
 
+		<script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
 		<script>
 			var longitude = -87.6298;
 			var latitude = 41.8781;
@@ -104,7 +105,7 @@
 			  		.addTo(map);
 
 			  	markers.push(marker);
-				
+
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
 				    var layers = map.getStyle().layers;
@@ -117,6 +118,74 @@
 				    }
 					// Create new layers here
 
+					// Load 
+					d3.json('http://dblayer:80/jsonData/test.json', function(err, data) {
+					        if (err) throw err;
+
+					        // Create a month property value based on time
+					        // used to filter against.
+					        data.features = data.features.map(function(d) {
+					            d.properties.month = new Date(d.properties.time).getMonth();
+					            return d;
+					        });
+
+					        map.addSource('precog_data', {
+					            'type': 'geojson',
+					            'data': data
+					        });
+
+					        map.addLayer({
+					            'id': 'precog-circles',
+					            'type': 'circle',
+					            'source': 'precog_data',
+					            'paint': {
+					                'circle-color': [
+					                    'interpolate',
+					                    ['linear'],
+					                    ['get', 'mag'],
+					                    6, '#FCA107',
+					                    8, '#7F3121'
+					                ],
+					                'circle-opacity': 0.75,
+					                'circle-radius': [
+					                    'interpolate',
+					                    ['linear'],
+					                    ['get', 'mag'],
+					                    6, 20,
+					                    8, 40
+					                ]
+					            }
+					        });
+
+					        map.addLayer({
+					            'id': 'precog-labels',
+					            'type': 'symbol',
+					            'source': 'precog_data',
+					            'layout': {
+					                'text-field': ['concat', ['to-string', ['get', 'mag']], 'm'],
+					                'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+					                'text-size': 12
+					            },
+					            'paint': {
+					                'text-color': 'rgba(0,0,0,0.5)'
+					            }
+					        });
+
+					        // Set filter to first month of the year
+					        // 0 = January
+					        filterBy(0);
+
+							document.getElementById('month_val').addEventListener('input', function(e) {
+								var month = parseInt(e.target.value, 10);
+								document.getElementById('month_val_disp').textContent = months[month];
+								filterBy(month);
+							});
+							document.getElementById('year_val').addEventListener('input', function(e) {
+						        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+						        filterBy(year_val);
+					        });
+					    });
+					});
 					// 3D Building layer
 				    map.addLayer({
 				        'id': '3d-buildings',

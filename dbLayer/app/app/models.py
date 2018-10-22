@@ -69,10 +69,6 @@ class PoliceStation(db.Model):
 	phone = db.Column(db.String(32))
 	fax = db.Column(db.String(32))
 	tty = db.Column(db.String(32))
-#	xCoord = db.Column(
-#	yCoord = db.Column(
-#	lat = db.Column(
-#	long = db.Column(
 	location = db.Column(Geometry('POINT'))
 
 # class SexOffenders(db.Model):
