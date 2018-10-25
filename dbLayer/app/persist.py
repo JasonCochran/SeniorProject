@@ -1,9 +1,8 @@
 from geoalchemy2 import func
 from geoalchemy2.types import Geometry
 from app import db
-from shapely.wkb import loads
 from app.models import PreCogRun, Prediction
-import geojson
+import geojson, os, codecs
 import pandas as pd
 
 
@@ -20,16 +19,16 @@ def geojsonConvert(queryResult):
 	return dump
 
 
-def persist(run_info):
-	result = db.session.query( func.ST_X(Prediction.location), func.ST_Y(Prediction.location), Prediction.certainty )
+# Persist a specific precog run from db
+def persistRun(runID, filename):
+	result = db.session.query( func.ST_X(Prediction.location), func.ST_Y(Prediction.location), Prediction.certainty ).filter(Prediction.precogrun == runID)
 	data = pd.read_sql( result.statement , result.session.bind)
-	geojsonConvert(data)
-	return "success"
+	geojson = geojsonConvert(data)
+	file_path = os.path.join("/app/app/static", filename + ".geojson")
+	with codecs.open( file_path, 'w', encoding="utf8") as fo:
+		fo.write(geojson)
 
 
-# Persist all available runs from the database
+# Persist all available precog runs from the db
 def persist_all():
 	return "success"
-
-
-persist("blah")

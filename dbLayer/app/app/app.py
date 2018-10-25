@@ -20,8 +20,18 @@ def getJSON(file):
 	return jsonify(json_data)
 
 
+@app.route('/prediction/<ID>', methods=['GET'])
+def getPredictions(ID):
+	file = ID
+	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
+	file_path = os.path.join(static_file_dir, file)
+	with open(file_path, 'r') as file_data:
+		json_data = json.load(file_data)
+	return jsonify(json_data)
+
 # Call to create a persisted JSON file for specific prediction
 @app.route('/persist/<run_info>', methods=['POST'])
 def persistEndpoint(run_info):
-	result = persist.persist(run_info)
+	filename = "blargh"
+	result = persist.persistRun(run_info, filename)
 	return result
