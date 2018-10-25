@@ -24,14 +24,14 @@ def getJSON(file):
 def getPredictions(ID):
 	file = ID
 	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
-	file_path = os.path.join(static_file_dir, file)
+	file_path = os.path.join(static_file_dir, file + ".geojson")
 	with open(file_path, 'r') as file_data:
 		json_data = json.load(file_data)
 	return jsonify(json_data)
 
 # Call to create a persisted JSON file for specific prediction
-@app.route('/persist/<run_info>', methods=['POST'])
+@app.route('/persist/<run_info>', methods=['GET'])
 def persistEndpoint(run_info):
-	filename = "blargh"
+	filename = run_info
 	result = persist.persistRun(run_info, filename)
 	return result

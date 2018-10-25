@@ -26,9 +26,9 @@ def createDummyPredictions(num):
 #       pred.type = 'general'
 #       pred.precog = 'basic_ml'
         pred.datetime = datetime.datetime(2018, 1, 1)
-        pred.location = "POINT( " + str(countIndex) + " " + str(countIndex) + " )"
+        pred.location = "POINT( " + str(41.640071) + " " + str(-87.503532) + " )"
         db.session.add(pred)
         countIndex = countIndex + 1
     db.session.commit()
 
-createDummyPredictions(100)
+createDummyPredictions(10)
