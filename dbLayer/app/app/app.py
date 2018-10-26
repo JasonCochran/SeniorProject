@@ -27,7 +27,9 @@ def getPredictions(ID):
 	file_path = os.path.join(static_file_dir, file + ".geojson")
 	with open(file_path, 'r') as file_data:
 		json_data = json.load(file_data)
-	return jsonify(json_data)
+	response = jsonify(json_data)
+	response.headers.add('Access-Control-Allow-Origin', '*')
+	return response
 
 # Call to create a persisted JSON file for specific prediction
 @app.route('/persist/<run_info>', methods=['GET'])
