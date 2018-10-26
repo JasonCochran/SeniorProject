@@ -20,8 +20,20 @@ def getJSON(file):
 	return jsonify(json_data)
 
 
+@app.route('/prediction/<ID>', methods=['GET'])
+def getPredictions(ID):
+	file = ID
+	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
+	file_path = os.path.join(static_file_dir, file + ".geojson")
+	with open(file_path, 'r') as file_data:
+		json_data = json.load(file_data)
+	response = jsonify(json_data)
+	response.headers.add('Access-Control-Allow-Origin', '*')
+	return response
+
 # Call to create a persisted JSON file for specific prediction
-@app.route('/persist/<run_info>', methods=['POST'])
+@app.route('/persist/<run_info>', methods=['GET'])
 def persistEndpoint(run_info):
-	result = persist.persist(run_info)
+	filename = run_info
+	result = persist.persistRun(run_info, filename)
 	return result

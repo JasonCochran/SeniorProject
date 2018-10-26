@@ -23,10 +23,10 @@
 		    </div>
 
 			<div class='map-overlay-inner'>
-				<h5>Year Selection: <output  id="year_val_disp"></output> </h5>
+				<h5>Year Selection: <h5  id="year_val_disp"></h5> </h5>
 				<input type="range" name="year" id="year_val" value="2018" min="2001" max="2028">
 				<h6>Note: Anything after 2018 is a prediction.</h6>
-				<h5>Month Selection: <output id='month_val_disp'></output> </h5>
+				<h5>Month Selection: <h5 id='month_val_disp'></h5> </h5>
 				<input id='month_val' type='range' min='0' max='11' step='1' value='0' />
 			</div>
 
@@ -34,6 +34,7 @@
 			</div>
 		</div>
 
+		<script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
 		<script>
 			var longitude = -87.6298;
 			var latitude = 41.8781;
@@ -104,7 +105,55 @@
 			  		.addTo(map);
 
 			  	markers.push(marker);
-				
+
+			  	d3.json('http://localhost:81/prediction/4', function(err, data) {
+					if (err) throw err;
+
+					// Create a month property value based on time
+					// used to filter against.
+					//data.features = data.features.map(function(d) {
+					//    d.properties.month = new Date(d.properties.time).getMonth();
+			        //   return d;
+			        //});
+
+			        map.addSource('precog_data', {
+			            'type': 'geojson',
+			            'data': data
+			        });
+
+			        console.log(data);
+
+			        map.addLayer({
+			            'id': 'precog',
+			            'type': 'circle',
+			            'source': 'precog_data',
+			            'paint': {
+			                'circle-color': '#D49A66',
+			                'circle-radius': [
+			                    'interpolate',
+			                    ['linear'],
+			                    ['get', 'certainty'],
+			                    6, 20,
+			                    8, 40
+			                ]
+			            }
+			        });
+
+			        // Set filter to first month of the year
+			        // 0 = January
+			        // filterBy(0);
+
+					document.getElementById('month_val').addEventListener('input', function(e) {
+						var month = parseInt(e.target.value, 10);
+						document.getElementById('month_val_disp').textContent = months[month];
+						// filterBy(month);
+					});
+					document.getElementById('year_val').addEventListener('input', function(e) {
+				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+				    	// filterBy(year_val);
+		        	});
+				});
+
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
 				    var layers = map.getStyle().layers;
@@ -116,6 +165,8 @@
 				        }
 				    }
 					// Create new layers here
+
+					// Load
 
 					// 3D Building layer
 				    map.addLayer({
@@ -145,6 +196,7 @@
 
 				});
 			}
+			display_map();
 		</script>
 
 {% endblock %}

@@ -17,3 +17,6 @@ Werkzeug==0.14.1
 WTForms==2.1
 xlrd==1.1.0
 psycopg2-binary
+geojson
+pandas
+shapely
