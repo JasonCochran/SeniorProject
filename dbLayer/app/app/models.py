@@ -50,13 +50,6 @@ class Prediction(db.Model):
 	location = db.Column(Geometry('POINT'))
 	datetime = db.Column(db.DateTime)	
 
-class Recommendation(db.Model):
-	_tablename_ = 'recommendation'
-	ID = db.Column(db.Integer, primary_key = True)
-	type = db.Column(db.String)
-	urgency = db.Column(db.Float)
-	location = db.Column(Geometry('POINT'))
-
 class PoliceStation(db.Model):
 	_tablename_ = 'policestation'
 	district = db.Column(db.String, primary_key = True)
