@@ -32,3 +32,5 @@ def persistRun(runID, filename):
 # Persist all available precog runs from the db
 def persist_all():
 	return "success"
+
+persistRun("5", "5")

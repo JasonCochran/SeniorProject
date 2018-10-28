@@ -10,6 +10,7 @@ body {
 	box-sizing: border-box;
 }
 
+
 .navbar.navbar-inverse {
   min-height: 8vh !important;
   padding: 0px 0;
@@ -26,6 +27,8 @@ body {
     top: 8vh;
     left: 0;
     padding: 20px;
+    height: 600px; /* or any value */
+    overflow-y: auto;
 }
 
 .map-overlay .map-overlay-inner {

@@ -5,6 +5,7 @@ import datetime
 from app import db
 from app.models import PreCogRun, Prediction
 import geojson
+import random
 
 
 # Create how ever many dummy predictions we want
@@ -21,12 +22,12 @@ def createDummyPredictions(num):
     for i in range(0,num):
         pred = Prediction()
         pred.precogrun=run.ID
-        pred.certainty = 1.0
+        pred.certainty = round(random.uniform(0,1), 2)
         pred.countIndex =  countIndex + 1
 #       pred.type = 'general'
 #       pred.precog = 'basic_ml'
         pred.datetime = datetime.datetime(2018, 1, 1)
-        pred.location = "POINT( " + str(41.640071) + " " + str(-87.503532) + " )"
+        pred.location = "POINT( " + str(round(random.uniform(-87.958428,-87.503532), 6)) + " " + str(round(random.uniform(41.640071,42.029866), 6)) + " )"
         db.session.add(pred)
         countIndex = countIndex + 1
     db.session.commit()

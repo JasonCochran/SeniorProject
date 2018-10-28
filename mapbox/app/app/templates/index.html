@@ -10,8 +10,12 @@
 {% block page_content %}
 
 		<div id='map'></div>
-
 		<div class='map-overlay top'>
+
+			<div class='map-overlay-inner'>
+				<h3>Settings </h3>
+			</div>
+
 			<div class='map-overlay-inner'>
 				<h4>Search</h4>
 				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
@@ -31,7 +35,25 @@
 			</div>
 
 			<div class='map-overlay-inner'>
+				<h5>Prediction Settings </h5>
+				<h5>PreCog Algorithm </h5>
+				<h5>Maybe some other display settings </h5>
 			</div>
+
+			<div class='map-overlay-inner'>
+				<h5>Recommendation Settings </h5>
+				<h5>What granularity of recs would we like to see? </h5>
+			</div>
+
+			<div class='map-overlay-inner'>
+				<h5>Raw Data View </h5>
+				<h5>Year/month selection or view some stats? </h5>
+			</div>
+
+			<div class='map-overlay-inner'>
+				<h5>PreCog Algorithm Selection: </h5>
+			</div>
+
 		</div>
 
 		<script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
@@ -106,22 +128,22 @@
 
 			  	markers.push(marker);
 
-			  	d3.json('http://localhost:81/prediction/4', function(err, data) {
+			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
 					if (err) throw err;
 
 					// Create a month property value based on time
 					// used to filter against.
 					//data.features = data.features.map(function(d) {
 					//    d.properties.month = new Date(d.properties.time).getMonth();
-			        //   return d;
-			        //});
+					//   return d;
+					//});
 
 			        map.addSource('precog_data', {
 			            'type': 'geojson',
 			            'data': data
 			        });
 
-			        console.log(data);
+			        // console.log(data);
 
 			        map.addLayer({
 			            'id': 'precog',
