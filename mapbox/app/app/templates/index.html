@@ -86,7 +86,8 @@
 				container: 'map',
 				style: 'http://localhost:85/styles/dark-matter-gl-style/style.json',
 				center: [longitude,latitude],
-				zoom: 15,
+				zoom: 10,
+				minZoom: 9,
 				bearing: -17.6,
 				pitch:45
 			});
@@ -128,6 +129,69 @@
 
 			  	markers.push(marker);
 
+				d3.json('http://localhost:81/prediction/6', function(err, data) {
+					if (err) throw err;
+
+			        map.addSource('crime_heatmap', {
+					    type: 'geojson',
+					    data: data
+					});
+
+					map.addLayer({
+					    id: 'precog_heatmap',
+					    source: 'crime_heatmap',
+					    type: 'heatmap',
+					    paint: {
+					        "heatmap-radius": [
+				                "interpolate",
+				                ["linear"],
+				                ["zoom"],
+				                6, 20,
+			                    8, 40
+				            ],
+					        "heatmap-color": [
+				                "interpolate",
+				                ["linear"],
+				                ["heatmap-density"],
+				                0, "rgba(33,102,172,0)",
+				                0.2, "rgb(103,169,207)",
+				                0.4, "rgb(209,229,240)",
+				                0.6, "rgb(253,219,199)",
+				                0.8, "rgb(239,138,98)",
+				                1, "rgb(178,24,43)"
+				            ],
+							"heatmap-weight": [
+				                "interpolate",
+				                ["linear"],
+				                ["get", "certainty"],
+				                0, 0,
+				                6, 10
+				            ],
+				            "heatmap-opacity": [
+				                "interpolate",
+				                ["linear"],
+				                ["zoom"],
+				                7, 1,
+				                9, .7
+				            ]
+					    }
+					});
+
+			        // Set filter to first month of the year
+			        // 0 = January
+			        // filterBy(0);
+
+					document.getElementById('month_val').addEventListener('input', function(e) {
+						var month = parseInt(e.target.value, 10);
+						document.getElementById('month_val_disp').textContent = months[month];
+						// filterBy(month);
+					});
+					document.getElementById('year_val').addEventListener('input', function(e) {
+				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+				    	// filterBy(year_val);
+		        	});
+				});
+				
 			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
 					if (err) throw err;
 
@@ -142,8 +206,6 @@
 			            'type': 'geojson',
 			            'data': data
 			        });
-
-			        // console.log(data);
 
 			        map.addLayer({
 			            'id': 'precog',
