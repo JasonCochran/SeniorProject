@@ -118,7 +118,7 @@
 		          console.log(error);
 		        }
 		      });
-		    }
+		    } // geocode()
 
 		    // Function to call to udpate data, markers, and layers
 		    function display_map() {
@@ -190,7 +190,7 @@
 				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
 				    	// filterBy(year_val);
 		        	});
-				});
+				}); // d3
 				
 			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
 					if (err) throw err;
@@ -236,7 +236,7 @@
 				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
 				    	// filterBy(year_val);
 		        	});
-				});
+				}); // d3
 
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
@@ -278,8 +278,9 @@
 				        }
 				    }, labelLayerId);
 
-				});
-			}
+				}); // on load
+			} // display_map()
+
 			display_map();
 		</script>
 
