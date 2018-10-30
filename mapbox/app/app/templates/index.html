@@ -13,45 +13,47 @@
 		<div class='map-overlay top'>
 
 			<div class='map-overlay-inner'>
-				<h3>Settings </h3>
+				<h3>Settings</h3>
+				<button class="button" onclick="">Data View</button>
+				<button class="button" onclick="">Recommendations</button>
+				<button class="button" onclick="">Risk Factors</button>
 			</div>
 
 			<div class='map-overlay-inner'>
-				<h4>Search</h4>
+				<h5>Search</h5>
 				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
 				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
-				<button class="button" onclick="getLonLat()"> Submit</button>
+				<button class="button" onclick="getLonLat()">Submit</button>
 				<br>
-				<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
-				<button class="button" onclick="geocode()"> Submit</button>
+				<input class="inputBox" type="text" id="Address" placeholder="Address" />
+				<button class="button" onclick="geocode()">Submit</button>
 		    </div>
 
 			<div class='map-overlay-inner'>
-				<h5>Year Selection: <h5  id="year_val_disp"></h5> </h5>
+				<h5>Data View Settings</h5>
+				<h6>Year Selection: <h6  id="year_val_disp"></h6> </h6>
 				<input type="range" name="year" id="year_val" value="2018" min="2001" max="2028">
 				<h6>Note: Anything after 2018 is a prediction.</h6>
-				<h5>Month Selection: <h5 id='month_val_disp'></h5> </h5>
+				<h6>Month Selection: <h6 id='month_val_disp'></h6> </h6>
 				<input id='month_val' type='range' min='0' max='11' step='1' value='0' />
 			</div>
 
 			<div class='map-overlay-inner'>
 				<h5>Prediction Settings </h5>
-				<h5>PreCog Algorithm </h5>
-				<h5>Maybe some other display settings </h5>
+				<h6>PreCog Algorithm </h6>
+				<select id="precog-select"></select>
+				<h6>Maybe some other display settings </h6>
 			</div>
 
 			<div class='map-overlay-inner'>
 				<h5>Recommendation Settings </h5>
-				<h5>What granularity of recs would we like to see? </h5>
+				<h6>What % of recs would we like to see? Number indicates what drop in crime is predicated for that recommendation if put into affect</h6>
+				<h6>Slider for percentage here?</h6>
 			</div>
 
 			<div class='map-overlay-inner'>
-				<h5>Raw Data View </h5>
-				<h5>Year/month selection or view some stats? </h5>
-			</div>
-
-			<div class='map-overlay-inner'>
-				<h5>PreCog Algorithm Selection: </h5>
+				<h5>Risk Factors</h5>
+				<h6>drop down for all the risk factors we calculate? e.g. food desert, transportation desert, lack of parks, business closings etc.</h6>
 			</div>
 
 		</div>
@@ -66,10 +68,20 @@
 			    'January', 'February', 'March', 'April', 'May', 'June',
 			    'July', 'August', 'September', 'October', 'November', 'December'
 			];
-
+/*
+			d3.json('http://localhost:81/precogruns/', function(err, data) {
+				if (err) throw err;
+				// Loop through the data and 
+				var select = document.getElementById("precog-select");
+				for (var i = 0; i < data.length; i++) {
+					select.options[select.options.length] = new Option(data[i].type, data[i].id);
+				}
+			}
+*/
 			// Set the slider disp text values even before user moves the slider
 			document.getElementById('year_val_disp').textContent = 2018;
 			document.getElementById('month_val_disp').textContent = months[0];
+
 			// Event calls for when we change the sliders
 			document.getElementById('month_val').addEventListener('input', function(e) {
 				var month = parseInt(e.target.value, 10);
@@ -99,7 +111,7 @@
 			function getLonLat(){
 				longitude = parseFloat( document.getElementById("Longitude").value );
 				latitude  = parseFloat( document.getElementById("Latitude").value );
-				display_map();
+				addGeoMarker();
 			}
 
 			// Do geocoding of address to lat/long
@@ -112,7 +124,7 @@
 		          // using the response, we can grab the latitude and longitude
 		          longitude = parseFloat( response.result.addressMatches[0].coordinates.x );
 		          latitude = parseFloat( response.result.addressMatches[0].coordinates.y );
-		          display_map();
+		          addGeoMarker();
 		        },
 		        error: function(error) {
 		          console.log(error);
@@ -120,14 +132,17 @@
 		      });
 		    } // geocode()
 
-		    // Function to call to udpate data, markers, and layers
-		    function display_map() {
-				// display a blue marker
-				var marker = new mapboxgl.Marker()
+		    function addGeoMarker() {
+		    	var marker = new mapboxgl.Marker()
 			  		.setLngLat([longitude,latitude])
 			  		.addTo(map);
 
 			  	markers.push(marker);
+		    }
+
+		    // Function to call to udpate data, markers, and layers
+		    function display_map() {
+				// display a blue marker
 
 				d3.json('http://localhost:81/prediction/6', function(err, data) {
 					if (err) throw err;
@@ -181,15 +196,6 @@
 			        // 0 = January
 			        // filterBy(0);
 
-					document.getElementById('month_val').addEventListener('input', function(e) {
-						var month = parseInt(e.target.value, 10);
-						document.getElementById('month_val_disp').textContent = months[month];
-						// filterBy(month);
-					});
-					document.getElementById('year_val').addEventListener('input', function(e) {
-				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
-				    	// filterBy(year_val);
-		        	});
 				}); // d3
 				
 			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
@@ -226,16 +232,6 @@
 			        // Set filter to first month of the year
 			        // 0 = January
 			        // filterBy(0);
-
-					document.getElementById('month_val').addEventListener('input', function(e) {
-						var month = parseInt(e.target.value, 10);
-						document.getElementById('month_val_disp').textContent = months[month];
-						// filterBy(month);
-					});
-					document.getElementById('year_val').addEventListener('input', function(e) {
-				        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
-				    	// filterBy(year_val);
-		        	});
 				}); // d3
 
 				map.on('load', function() {
