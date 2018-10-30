@@ -10,8 +10,7 @@ def index():
 
 
 def getFile(file, path):
-	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
-	file_path = os.path.join(static_file_dir, "precogruns.json")
+	file_path = os.path.join(path, file)
 	with open(file_path, 'r') as file_data:
 		json_data = json.load(file_data)
 	response = jsonify(json_data)

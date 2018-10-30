@@ -14,9 +14,8 @@
 
 			<div class='map-overlay-inner'>
 				<h3>Settings</h3>
-				<button class="button" onclick="">Data View</button>
-				<button class="button" onclick="">Recommendations</button>
-				<button class="button" onclick="">Risk Factors</button>
+				<h6>Select a view mode:</h6>
+				<select id="mode-select" onchange="toggleMode()"></select>
 			</div>
 
 			<div class='map-overlay-inner'>
@@ -27,31 +26,29 @@
 				<br>
 				<input class="inputBox" type="text" id="Address" placeholder="Address" />
 				<button class="button" onclick="geocode()">Submit</button>
+				<button class="button" onclick="clearMarkers()">Clear Markers</button>
 		    </div>
 
-			<div class='map-overlay-inner'>
+			<div class='map-overlay-inner' id="data_view">
 				<h5>Data View Settings</h5>
 				<h6>Year Selection: <h6  id="year_val_disp"></h6> </h6>
 				<input type="range" name="year" id="year_val" value="2018" min="2001" max="2028">
 				<h6>Note: Anything after 2018 is a prediction.</h6>
 				<h6>Month Selection: <h6 id='month_val_disp'></h6> </h6>
 				<input id='month_val' type='range' min='0' max='11' step='1' value='0' />
-			</div>
-
-			<div class='map-overlay-inner'>
 				<h5>Prediction Settings </h5>
 				<h6>PreCog Algorithm </h6>
 				<select id="precog-select"></select>
 				<h6>Maybe some other display settings </h6>
 			</div>
 
-			<div class='map-overlay-inner'>
+			<div class='map-overlay-inner' id="rec_view">
 				<h5>Recommendation Settings </h5>
 				<h6>What % of recs would we like to see? Number indicates what drop in crime is predicated for that recommendation if put into affect</h6>
 				<h6>Slider for percentage here?</h6>
 			</div>
 
-			<div class='map-overlay-inner'>
+			<div class='map-overlay-inner' id="risk_view">
 				<h5>Risk Factors</h5>
 				<h6>drop down for all the risk factors we calculate? e.g. food desert, transportation desert, lack of parks, business closings etc.</h6>
 			</div>
@@ -68,8 +65,15 @@
 			    'January', 'February', 'March', 'April', 'May', 'June',
 			    'July', 'August', 'September', 'October', 'November', 'December'
 			];
-/*
-			d3.json('http://localhost:81/precogruns/', function(err, data) {
+
+			var mode = document.getElementById("mode-select");
+			// The value for option is the layer name it enables/disables as well as the GUI section
+			mode.options[mode.options.length] = new Option("Data View", "data_view");
+			mode.options[mode.options.length] = new Option("Recommendations", "rec_view");
+			mode.options[mode.options.length] = new Option("Risk Factors", "risk_view");
+
+			// Add available precog runs to data view
+/*			d3.json('http://localhost:81/precogruns/', function(err, data) {
 				if (err) throw err;
 				// Loop through the data and 
 				var select = document.getElementById("precog-select");
@@ -93,6 +97,23 @@
 		        // Every time we change update the data
 	        });
 
+			// Clear out marker array and remove all markers from map
+			function clearMarkers() {
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].remove();
+				}
+				markers = new Array(); // Reset array to be empty
+			}
+
+			function toggleMode() {
+				// First turn off all the divs
+			    for (var i = 0; i < mode.options.length; i++) {
+			    	document.getElementById( mode.options[i].value ).style.display = "none";
+			    }
+			    // Then just turn on the one we want
+			    document.getElementById( mode.value ).style.display = "block";
+			}
+
 			// Create map
 			var map = new mapboxgl.Map({
 				container: 'map',
@@ -104,7 +125,7 @@
 				pitch:45
 			});
 
-		  	// Navigation marker at top-left corner
+		  	// Navigation controls at top-left corner
 		  	var nav = new mapboxgl.NavigationControl();
 		  	map.addControl(nav, 'top-right');
 
@@ -140,7 +161,7 @@
 			  	markers.push(marker);
 		    }
 
-		    // Function to call to udpate data, markers, and layers
+		    // Function to call to add layers
 		    function display_map() {
 				// display a blue marker
 
@@ -247,7 +268,7 @@
 					// Create new layers here
 
 					// Load
-
+/*
 					// 3D Building layer
 				    map.addLayer({
 				        'id': '3d-buildings',
@@ -273,11 +294,12 @@
 				            'fill-extrusion-opacity': .6
 				        }
 				    }, labelLayerId);
-
+*/
 				}); // on load
 			} // display_map()
 
 			display_map();
+			toggleMode();
 		</script>
 
 {% endblock %}
