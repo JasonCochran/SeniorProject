@@ -74,7 +74,32 @@ class RecommendationProfile(db.Model):
 	_tablename_ = 'recommendationProfile'
 	id = db.Column(db.Integer, primary_key = True)
 	type = db.Column(db.String(64))
-	feeders = db.Column(db.String(132))
+	dataFeeder = db.Column(db.String(132))
+	distance = db.Column(db.Float)
+	comparator = db.Column(db.String(10))
+	# So we could have an attribute that lack of it could indicate that an
+	# area prone to crime right… we could say if square x (of the 2000
+	# some squares we have) is >y distance from some item z we should
+	# say this area is prone to crime
+
+class VacantBuilding(db.Model):
+	_tablename_ = "vacantBuilding"
+	ID = db.Column(db.Integer, primary_key = True)
+	location = db.Column(Geometry('POINT'))
+	address = db.Column(db.String(255))
+
+class GroceryStore(db.Model):
+	_tablename_ = "groceryStore"
+	ID = db.Column(db.Integer, primary_key = True)
+	location = db.Column(Geometry('POINT'))
+	name = db.Column(db.String(32))
+	address = db.Column(db.String(255))
+
+class BusinessChanges(db.Model):
+	_tablename_ = "businessChanges"
+	ID = db.Column(db.Integer, primary_key = True)
+	location = db.Column(Geometry('POINT'))
+	type = db.Column(db.String(32))
 
 # class SexOffenders(db.Model):
 
