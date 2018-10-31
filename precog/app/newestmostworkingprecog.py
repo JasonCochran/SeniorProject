@@ -28,6 +28,50 @@ crimeCounts = []
 boxes = []
 testcrimeCounts = []
 testboxes = []
+def commitToDB(rf):
+        curDT = datetime.datetime.now() 
+#        tryears = [2001,2002,2003,2004,2005,2006]
+#        tyears = [2007,2008,2009,2010]
+        tryears = [2001, 2002]
+        tyears = [2003, 2004]
+        years = tryears + tyears
+        months = range(1,13)
+        originLat = float(os.environ['LATORG'])
+        originLong = float(os.environ['LONORG'])
+        limitLat = float(os.environ['LATSTOP'])
+        limitLong = float(os.environ['LONSTOP'])
+        bbsize = float(os.environ['BBSIZE'])
+        bbsize=0.007
+        NSBoxes = ( originLat - limitLat ) / bbsize
+        EWBoxes = ( originLong - limitLong ) / bbsize
+        DT = datetime.datetime.now() 
+        countIndex = 0
+        run = PreCogRun()
+        run.type = "thefts by box-months using random forest"
+        run.precog = "MRFT"
+        run.datetime = DT
+        db.session.add(run)
+        db.session.flush()
+        db.session.refresh(run)
+        for x in np.arange(0, np.absolute(NSBoxes)):
+                # X loop
+                for y in np.arange(0, np.absolute(EWBoxes)):
+                    for year in years:
+                        for month in months:
+                            centerLat = ((originLat - (x*bbsize)) + (originLat - (x*bbsize)  - bbsize))/ 2
+                            centerLon = ((originLong + (y*bbsize)) + (originLong + (y*bbsize) + bbsize))/ 2
+                            pred = Prediction()
+                            predic = rf.predict([[centerLat,centerLon,year,month]])[0]
+                            pred.precogrun=run.ID
+                            pred.certainty = predic
+                            pred.countIndex =  countIndex + 1
+    #                            pred.type = 'general'
+    #                            pred.precog = 'basic_ml'
+                            pred.datetime = datetime.datetime(year, month, 1)
+                            pred.location = "POINT( " + str(x) + " " + str(y) + " )"
+                            db.session.add(pred)
+                            countIndex = countIndex + 1
+        db.session.commit()
 def runStats():
         curDT = datetime.datetime.now() 
 #        tryears = [2001,2002,2003,2004,2005,2006]
@@ -162,51 +206,9 @@ def runStats():
         r2 = sklearn.metrics.r2_score(testOutput, predic, sample_weight=None, multioutput="uniform_average")
         print("score ", rf.score(testFeatures,testOutput))
         print("r2 ", r2)
+        commitToDB(rf)
 
 runStats()
 
-def commitToDB(rf):
-        curDT = datetime.datetime.now() 
-#        tryears = [2001,2002,2003,2004,2005,2006]
-#        tyears = [2007,2008,2009,2010]
-        tryears = [2001, 2002]
-        tyears = [2003, 2004]
-        years = tryears + tyears
-        months = range(1,13)
-        originLat = float(os.environ['LATORG'])
-        originLong = float(os.environ['LONORG'])
-        limitLat = float(os.environ['LATSTOP'])
-        limitLong = float(os.environ['LONSTOP'])
-        bbsize = float(os.environ['BBSIZE'])
-        bbsize=0.007
-        NSBoxes = ( originLat - limitLat ) / bbsize
-        EWBoxes = ( originLong - limitLong ) / bbsize
-        DT = datetime.datetime.now() 
-        countIndex = 0
-        run = PreCogRun()
-        run.type = "thefts by box-months using random forest"
-        run.precog = "MRFT"
-        run.datetime = DT
-        db.session.add(run)
-        db.session.flush()
-        db.session.refresh(run)
-        for x in np.arange(0, np.absolute(NSBoxes)):
-                # X loop
-                for y in np.arange(0, np.absolute(EWBoxes)):
-                    for year in years:
-                        for month in months:
-                            centerLat = ((originLat - (x*bbsize)) + (originLat - (x*bbsize)  - bbsize))/ 2
-                            centerLon = ((originLong + (y*bbsize)) + (originLong + (y*bbsize) + bbsize))/ 2
-                            pred = Prediction()
-                            predic = rf.predict([[centerLat,centerLon,year,month]])[0]
-                            pred.precogrun=run.ID
-                            pred.certainty = predic
-                            pred.countIndex =  countIndex + 1
-    #                            pred.type = 'general'
-    #                            pred.precog = 'basic_ml'
-                            pred.datetime = datetime.datetime(year, month, 1)
-                            pred.location = "POINT( " + str(x) + " " + str(y) + " )"
-                            db.session.add(pred)
-                            countIndex = countIndex + 1
-        db.session.commit()
+
     
