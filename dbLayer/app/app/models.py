@@ -82,25 +82,6 @@ class RecommendationProfile(db.Model):
 	# some squares we have) is >y distance from some item z we should
 	# say this area is prone to crime
 
-class VacantBuilding(db.Model):
-	_tablename_ = "vacantBuilding"
-	ID = db.Column(db.Integer, primary_key = True)
-	location = db.Column(Geometry('POINT'))
-	address = db.Column(db.String(255))
-
-class GroceryStore(db.Model):
-	_tablename_ = "groceryStore"
-	ID = db.Column(db.Integer, primary_key = True)
-	location = db.Column(Geometry('POINT'))
-	name = db.Column(db.String(32))
-	address = db.Column(db.String(255))
-
-class BusinessChanges(db.Model):
-	_tablename_ = "businessChanges"
-	ID = db.Column(db.Integer, primary_key = True)
-	location = db.Column(Geometry('POINT'))
-	type = db.Column(db.String(32))
-
 # class SexOffenders(db.Model):
 
 # class Districts(db.Model):
