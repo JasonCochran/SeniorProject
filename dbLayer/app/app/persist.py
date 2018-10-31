@@ -49,3 +49,4 @@ def persist_available_runs():
 	file_path = os.path.join("/app/app/static", "precogruns.json")
 	with codecs.open( file_path, 'w', encoding="utf8") as fo:
 		fo.write(geojson)
+	return True
