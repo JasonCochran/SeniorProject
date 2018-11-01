@@ -6,7 +6,7 @@ import os, sys, json
 
 @app.route('/')
 def index():
-    return 'Pred Pol Database Data Curation script. Purely used for uploading data to PostGIS.'
+    return 'Pred Pol Database Data Curation and persistance layer.'
 
 
 def getFile(file, path):
@@ -29,6 +29,7 @@ def getJSON(file):
 	return jsonify(json_data)
 
 
+# Get list of all available precog runs (with all associated metadata)
 @app.route('/precogruns/', methods=['GET'])
 def getPreCogRuns():
 	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
@@ -40,6 +41,7 @@ def getPreCogRuns():
 	return response
 
 
+# Get specific set of predictions based on precog run ID
 @app.route('/prediction/<ID>', methods=['GET'])
 def getPredictions(ID):
 	file = ID
@@ -51,9 +53,10 @@ def getPredictions(ID):
 	response.headers.add('Access-Control-Allow-Origin', '*')
 	return response
 
+
 # Call to create a persisted JSON file for specific prediction
 @app.route('/persist/<run_info>', methods=['GET'])
 def persistEndpoint(run_info):
 	filename = run_info
 	result = persist.persistRun(run_info, filename)
-	return result
+	return ('', 204)
