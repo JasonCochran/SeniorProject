@@ -32,6 +32,7 @@ def getJSON(file):
 # Get list of all available precog runs (with all associated metadata)
 @app.route('/precogruns/', methods=['GET'])
 def getPreCogRuns():
+	persist.persist_available_runs()
 	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 	file_path = os.path.join(static_file_dir, "precogruns.json")
 	with open(file_path, 'r') as file_data:
