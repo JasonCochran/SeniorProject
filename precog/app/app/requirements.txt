@@ -20,3 +20,4 @@ geoalchemy2
 sklearn
 numpy
 scipy
+requests

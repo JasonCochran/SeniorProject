@@ -1,5 +1,5 @@
 from app import db
-from app.models import Prediction, Incident
+from app.models import Prediction, Incident, PreCogRun
 from flask_sqlalchemy import SQLAlchemy
 import os
 import datetime
@@ -12,12 +12,15 @@ from sqlalchemy import func
 import time
 from sklearn import *
 import sklearn
+from sklearn.externals import joblib
+from tempfile import TemporaryFile
 
 def runStats():
         curDT = datetime.datetime.now() 
         
-        years = [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-        months = range(1,13)
+        #years = [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+        years = [2001, 2002]
+        months = range(1,5)
         originLat = float(os.environ['LATORG'])
         originLong = float(os.environ['LONORG'])
         limitLat = float(os.environ['LATSTOP'])
@@ -96,8 +99,12 @@ def runStats():
                         #print("time remaining: ",(((current-start)/totalCrimes)*6600000)-(current-start))
                         
 
-
-
+        #monthFeaturesfile = TemporaryFile()
+        #monthOutputsfile = TemporaryFile()
+        #monthFeatures = np.array(monthResult)
+        #monthOutputs = np.array(crimeCounts)
+        #np.save(monthFeaturesfile, monthFeatures)
+        #np.save(monthOutputsfile, monthOutputs)
         # Run stats over the array, most likely just find max for normalization heat map
         #maxCrimes = max(crimeCounts)
         regr = RandomForestRegressor()
@@ -106,36 +113,73 @@ def runStats():
         testFeatures = np.array(boxes[int(len(boxes)/2):])
         testOutput = np.array(crimeCounts[int(len(crimeCounts)/2):])
         regr.fit(features, output)
-        regr.predict(testFeatures)
-        variance = sklearn.metrics.explained_variance_score(testOutput, regr.predict(testFeatures), sample_weight=None, multioutput='uniform_average')
-        print("variance ", variance)
-        print("score ", regr.score(testFeatures,testOutput))
+        predic = regr.predict(testFeatures)
+        joblib.dump(regr, 'precogMonths.joblib') 
 
+        variance = sklearn.metrics.explained_variance_score(testOutput, predic, sample_weight=None, multioutput='uniform_average')
+#        r2 = sklearn.metrics.r2_score(testOutput, predic, sample_weight=None, multioutput="uniform_average")
+#        r22 = sklearn.metrics.r2_score(testOutput, predic, sample_weight=None, multioutput="raw_values")
+#        r222 = sklearn.metrics.r2_score(testOutput, predic, sample_weight=None, multioutput="variance_weighted")
+#        
+#        mae1 = sklearn.metrics.mean_absolute_error(testOutput, predic, sample_weight=None, multioutput="uniform_average")
+#        mae2 = sklearn.metrics.mean_absolute_error(testOutput, predic, sample_weight=None, multioutput="raw_values")
+#        mae3 = sklearn.metrics.mean_absolute_error(testOutput, predic, sample_weight=None, multioutput="variance_weighted")
+#        
+#        mse1 = sklearn.metrics.mean_squared_error(testOutput, predic, sample_weight=None, multioutput="uniform_average")
+#        mse2 = sklearn.metrics.mean_squared_error(testOutput, predic, sample_weight=None, multioutput="raw_values")
+#        mse3 = sklearn.metrics.mean_squared_error(testOutput, predic, sample_weight=None, multioutput="variance_weighted")
+#        #accuracy = sklearn.metrics.accuracy_score(testOutput,predic,normalize=True,sample_weight=None)
+#        #print(sklearn.metrics.classification_report(testOutput,predic,labels=None,target_names=None,sample_weight=None,digits=10))
+#        print("variance ", variance)
+#        print("score ", regr.score(testFeatures,testOutput))
+#        print("r2 ", r2)
+#        print("r2 raw ", r22)
+#        print("r2  variance weighted", r222)
+#        
+#        print("mae ", mae1)
+#        print("mae raw ", mae2)
+#        print("mae  variance weighted", mae3)
+#        
+#        print("mse ", mse1)
+#        print("mse raw ", mse2)
+#        print("mse  variance weighted", mse3)
+#        
+#        print("input length ", boxes.__len__())
+#        print("total output length ", crimeCounts.__len__())
+#        print("feature length ", features.__len__())
+#        print("output length ", output.__len__())
+#        print("test feature length ", testFeatures.__len__())
+#        print("test output length ", testOutput.__len__())
+
+        #print("accuracy ", accuracy)
+        DT = datetime.datetime.now() 
         countIndex = 0
-    
-#        for x in np.arange(0, np.absolute(NSBoxes)):
-#                # X loop
-#                for y in np.arange(0, np.absolute(EWBoxes)):
-#                    for year in years:
-#                        # Y loop
-#                        # Create predictions for each grid location
-#                        # Create central point
-#                        x = ((originLat - (x*bbsize)) + (originLat - (x*bbsize)  - bbsize))/ 2
-#                        y = ((originLong + (y*bbsize)) + (originLong + (y*bbsize) + bbsize))/ 2
-#                        pred = Prediction()
-#                        #predic = regr.predict([[x,y,year]])[0]
-#                        #print(predic)
-#                        pred.certainty = predic
-#                        pred.countIndex =  countIndex + 1
-#                        pred.type = 'general'
-#                        pred.precog = 'basic_ml'
-#                        pred.datetime = curDT
-#                        pred.location = "POINT( " + str(x) + " " + str(y) + " )"
-#                        db.session.add(pred)
-##                       print("POINT( " + str(x) + " " + str(y) + " )")
-##                       print(crimeCounts[countIndex] / maxCrimes)
-#                        countIndex = countIndex + 1
-#        db.session.commit()
+        run = PreCogRun()
+        run.type = "thefts by box-months using random forest"
+        run.precog = "MRF"
+        run.datetime = DT
+        db.session.add(run)
+        db.session.flush()
+        db.session.refresh(run)
+        for x in np.arange(0, np.absolute(NSBoxes)):
+                # X loop
+                for y in np.arange(0, np.absolute(EWBoxes)):
+                    for year in years:
+                        for month in months:
+                            x = ((originLat - (x*bbsize)) + (originLat - (x*bbsize)  - bbsize))/ 2
+                            y = ((originLong + (y*bbsize)) + (originLong + (y*bbsize) + bbsize))/ 2
+                            pred = Prediction()
+                            predic = regr.predict([[x,y,year,month]])[0]
+                            pred.precogrun=run.ID
+                            pred.certainty = predic
+                            pred.countIndex =  countIndex + 1
+                            pred.type = 'general'
+                            pred.precog = 'basic_ml'
+                            pred.datetime = datetime.datetime(year, month, 1)
+                            pred.location = "POINT( " + str(x) + " " + str(y) + " )"
+                            db.session.add(pred)
+                            countIndex = countIndex + 1
+        db.session.commit()
 
 runStats()
 print("Stats pre cog finished running")

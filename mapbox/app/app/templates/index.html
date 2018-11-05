@@ -10,70 +10,125 @@
 {% block page_content %}
 
 		<div id='map'></div>
-
 		<div class='map-overlay top'>
-		    <div class='map-overlay-inner'>
-				<h4>Search</h4>
+
+			<div class='map-overlay-inner'>
+				<h3>Settings</h3>
+				<h6>Select a view mode:</h6>
+				<select id="mode-select" onchange="toggleMode()"></select>
+			</div>
+
+			<div class='map-overlay-inner'>
+				<h5>Search</h5>
 				<input class="inputBox" type="number" step="0.00001" id="Longitude" placeholder="Longitude" />
 				<input class="inputBox" type="number" step="0.00001" id="Latitude" placeholder="Latitude" />
-				<button class="button" onclick="getLonLat()"> Submit</button>
+				<button class="button" onclick="getLonLat()">Submit</button>
 				<br>
-				<input class="inputBox" type="text" id="Address" placeholder="Enter Address" />
-				<button class="button" onclick="geocode()"> Submit</button>
+				<input class="inputBox" type="text" id="Address" placeholder="Address" />
+				<button class="button" onclick="geocode()">Submit</button>
+				<button class="button" onclick="clearMarkers()">Clear Markers</button>
 		    </div>
-		    <div class='map-overlay-inner'>
-		        <h5>Year Selection: </h5> <output  id="year_val_disp"></output>
-		        <input type="range" name="year" id="year_val" value="2018" min="2001" max="2028" oninput="year_val_disp.value = year_val.value">
-		        <h6>Note: Anything after 2018 is a prediction.</h6>
-		        <h5>Month Selection: </h5> <output id='month'></output>
-		        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
-		    </div>
-		   	<div class='map-overlay-inner'>
-		    </div>
+
+			<div class='map-overlay-inner' id="data_view">
+				<h5>Data View Settings</h5>
+				<h6>Year Selection: <h6  id="year_val_disp"></h6> </h6>
+				<input type="range" name="year" id="year_val" value="2018" min="2001" max="2028">
+				<h6>Note: Anything after 2018 is a prediction.</h6>
+				<h6>Month Selection: <h6 id='month_val_disp'></h6> </h6>
+				<input id='month_val' type='range' min='0' max='11' step='1' value='0' />
+				<h5>Prediction Settings </h5>
+				<h6>PreCog Algorithm </h6>
+				<select id="precog-select"></select>
+				<h6>Maybe some other display settings </h6>
+			</div>
+
+			<div class='map-overlay-inner' id="rec_view">
+				<h5>Recommendation Settings </h5>
+				<h6>What % of recs would we like to see? Number indicates what drop in crime is predicated for that recommendation if put into affect</h6>
+				<h6>Slider for percentage here?</h6>
+			</div>
+
+			<div class='map-overlay-inner' id="risk_view">
+				<h5>Risk Factors</h5>
+				<h6>drop down for all the risk factors we calculate? e.g. food desert, transportation desert, lack of parks, business closings etc.</h6>
+			</div>
+
 		</div>
 
+		<script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
 		<script>
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
 			var markers = new Array();
 			var months = [
-			    'January',
-			    'February',
-			    'March',
-			    'April',
-			    'May',
-			    'June',
-			    'July',
-			    'August',
-			    'September',
-			    'October',
-			    'November',
-			    'December'
+			    'January', 'February', 'March', 'April', 'May', 'June',
+			    'July', 'August', 'September', 'October', 'November', 'December'
 			];
 
-			document.getElementById('slider').addEventListener('input', function(e) {
-		        var month = parseInt(e.target.value, 10);
-		        document.getElementById('month').textContent = months[month];
+			var mode = document.getElementById("mode-select");
+			// The value for option is the layer name it enables/disables as well as the GUI section
+			mode.options[mode.options.length] = new Option("Data View", "data_view");
+			mode.options[mode.options.length] = new Option("Recommendations", "rec_view");
+			mode.options[mode.options.length] = new Option("Risk Factors", "risk_view");
+
+			// Set the slider disp text values even before user moves the slider
+			document.getElementById('year_val_disp').textContent = 2018;
+			document.getElementById('month_val_disp').textContent = months[0];
+
+			// Event calls for when we change the sliders
+			document.getElementById('month_val').addEventListener('input', function(e) {
+				var month = parseInt(e.target.value, 10);
+				document.getElementById('month_val_disp').textContent = months[month];
+				// Every time we change update the data
+			});
+			document.getElementById('year_val').addEventListener('input', function(e) {
+		        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+		        // Every time we change update the data
 	        });
 
+			// Clear out marker array and remove all markers from map
+			function clearMarkers() {
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].remove();
+				}
+				markers = new Array(); // Reset array to be empty
+				loadRuns();
+			}
+
+			function toggleMode() {
+				// First turn off all the divs
+			    for (var i = 0; i < mode.options.length; i++) {
+			    	document.getElementById( mode.options[i].value ).style.display = "none";
+			    }
+			    // Then just turn on the one we want
+			    document.getElementById( mode.value ).style.display = "block";
+			    toggleLayers();
+			}
+
+			function toggleLayers() {
+				// Switch to layers for this mode
+			}
+
+			// Create map
 			var map = new mapboxgl.Map({
 				container: 'map',
 				style: 'http://localhost:85/styles/dark-matter-gl-style/style.json',
 				center: [longitude,latitude],
-				zoom: 15,
+				zoom: 10,
+				minZoom: 9,
 				bearing: -17.6,
 				pitch:45
 			});
 
-		  	// Navigation marker at top-left corner
+		  	// Navigation controls at top-left corner
 		  	var nav = new mapboxgl.NavigationControl();
 		  	map.addControl(nav, 'top-right');
 
 			function getLonLat(){
 				longitude = parseFloat( document.getElementById("Longitude").value );
 				latitude  = parseFloat( document.getElementById("Latitude").value );
-				display_map();
+				addGeoMarker();
 			}
 
 			// Do geocoding of address to lat/long
@@ -86,22 +141,114 @@
 		          // using the response, we can grab the latitude and longitude
 		          longitude = parseFloat( response.result.addressMatches[0].coordinates.x );
 		          latitude = parseFloat( response.result.addressMatches[0].coordinates.y );
-		          display_map();
+		          addGeoMarker();
 		        },
 		        error: function(error) {
 		          console.log(error);
 		        }
 		      });
-		    }
+		    } // geocode()
 
-		    function display_map() {
-				// display a blue marker
-				var marker = new mapboxgl.Marker()
+		    function addGeoMarker() {
+		    	var marker = new mapboxgl.Marker()
 			  		.setLngLat([longitude,latitude])
 			  		.addTo(map);
-
 			  	markers.push(marker);
+		    }
+
+		    // Function to call to add layers
+		    function display_map() {
+
+				d3.json('http://localhost:81/prediction/1', function(err, data) {
+					if (err) throw err;
+
+			        map.addSource('crime_heatmap', {
+					    type: 'geojson',
+					    data: data
+					});
+
+					map.addLayer({
+					    id: 'precog_heatmap',
+					    source: 'crime_heatmap',
+					    type: 'heatmap',
+					    paint: {
+					        "heatmap-radius": [
+				                "interpolate",
+				                ["linear"],
+				                ["zoom"],
+				                6, 20,
+			                    8, 40
+				            ],
+					        "heatmap-color": [
+				                "interpolate",
+				                ["linear"],
+				                ["heatmap-density"],
+				                0, "rgba(33,102,172,0)",
+				                0.2, "rgb(103,169,207)",
+				                0.4, "rgb(209,229,240)",
+				                0.6, "rgb(253,219,199)",
+				                0.8, "rgb(239,138,98)",
+				                1, "rgb(178,24,43)"
+				            ],
+							"heatmap-weight": [
+				                "interpolate",
+				                ["linear"],
+				                ["get", "certainty"],
+				                0, 0,
+				                6, 10
+				            ],
+				            "heatmap-opacity": [
+				                "interpolate",
+				                ["linear"],
+				                ["zoom"],
+				                7, 1,
+				                9, .7
+				            ]
+					    }
+					});
+
+			        // Set filter to first month of the year
+			        // 0 = January
+			        // filterBy(0);
+
+				}); // d3
 				
+			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
+					if (err) throw err;
+
+					// Create a month property value based on time
+					// used to filter against.
+					//data.features = data.features.map(function(d) {
+					//    d.properties.month = new Date(d.properties.time).getMonth();
+					//   return d;
+					//});
+
+			        map.addSource('precog_data', {
+			            'type': 'geojson',
+			            'data': data
+			        });
+
+			        map.addLayer({
+			            'id': 'precog',
+			            'type': 'circle',
+			            'source': 'precog_data',
+			            'paint': {
+			                'circle-color': '#D49A66',
+			                'circle-radius': [
+			                    'interpolate',
+			                    ['linear'],
+			                    ['get', 'certainty'],
+			                    6, 20,
+			                    8, 40
+			                ]
+			            }
+			        });
+
+			        // Set filter to first month of the year
+			        // 0 = January
+			        // filterBy(0);
+				}); // d3
+
 				map.on('load', function() {
 				    // Insert the layer beneath any symbol layer.
 				    var layers = map.getStyle().layers;
@@ -113,7 +260,10 @@
 				        }
 				    }
 					// Create new layers here
-					
+
+					// Load
+/*
+					// 3D Building layer
 				    map.addLayer({
 				        'id': '3d-buildings',
 				        'source': 'composite',
@@ -123,9 +273,8 @@
 				        'minzoom': 15,
 				        'paint': {
 				            'fill-extrusion-color': '#aaa',
-
-				            // use an 'interpolate' expression to add a smooth transition effect to the
-				            // buildings as the user zooms in
+				            // use an 'interpolate' expression to add a smooth transition
+				            // effect to the buildings as the user zooms in
 				            'fill-extrusion-height': [
 				                "interpolate", ["linear"], ["zoom"],
 				                15, 0,
@@ -139,9 +288,23 @@
 				            'fill-extrusion-opacity': .6
 				        }
 				    }, labelLayerId);
+*/
+				}); // on load
+			} // display_map()
 
-				});
-			}
+			display_map();
+			toggleMode();
+
+			// Add available precog runs to data view
+			d3.json('http://localhost:81/precogruns/', function(err, data) {
+				if (err) throw err;
+				// Loop through the data and
+				var select = document.getElementById("precog-select");
+				for (var i = 0; i < data.children.length; i++) {
+					select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
+					console.log(data[i].type);
+				}
+			});
 
 		</script>
 

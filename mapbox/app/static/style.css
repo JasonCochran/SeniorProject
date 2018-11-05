@@ -26,6 +26,8 @@ body {
     top: 8vh;
     left: 0;
     padding: 20px;
+    height: 600px; /* or any value */
+    overflow-y: auto;
 }
 
 .map-overlay .map-overlay-inner {
@@ -66,7 +68,7 @@ body {
     background-color: #337036;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;

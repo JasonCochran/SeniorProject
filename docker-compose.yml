@@ -34,6 +34,18 @@ services:
          - env_file
       volumes:
          - ./precog/app:/app
+   rec_eng:
+      build:
+         context: rec_eng
+      ports:
+         - "86:80"
+      restart: always
+      networks:
+         - db_nw
+      env_file:
+         - env_file
+      volumes:
+         - ./rec_eng/app:/app
    stat_precog:
       build:
          context: stat_precog
@@ -66,7 +78,15 @@ services:
          - db_nw
       volumes:
          - ./mapbox/app:/app
+   jupyter:
+      image: jupyter/datascience-notebook
+      ports:
+         - "8888:8888"
+      restart: always
+      networks:
+         - db_nw
+      env_file:
+         - env_file
 networks:
    db_nw:
       driver: bridge
-

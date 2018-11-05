@@ -50,13 +50,6 @@ class Prediction(db.Model):
 	location = db.Column(Geometry('POINT'))
 	datetime = db.Column(db.DateTime)	
 
-class Recommendation(db.Model):
-	_tablename_ = 'recommendation'
-	ID = db.Column(db.Integer, primary_key = True)
-	type = db.Column(db.String)
-	urgency = db.Column(db.Float)
-	location = db.Column(Geometry('POINT'))
-
 class PoliceStation(db.Model):
 	_tablename_ = 'policestation'
 	district = db.Column(db.String, primary_key = True)
@@ -69,11 +62,25 @@ class PoliceStation(db.Model):
 	phone = db.Column(db.String(32))
 	fax = db.Column(db.String(32))
 	tty = db.Column(db.String(32))
-#	xCoord = db.Column(
-#	yCoord = db.Column(
-#	lat = db.Column(
-#	long = db.Column(
 	location = db.Column(Geometry('POINT'))
+
+class Recommendation(db.Model):
+	_tablename_ = 'recommendation'
+	id = db.Column(db.Integer, primary_key = True)
+	recommendation = db.Column(db.String(132))
+	location = db.Column(Geometry('POINT'))
+
+class RecommendationProfile(db.Model):
+	_tablename_ = 'recommendationProfile'
+	id = db.Column(db.Integer, primary_key = True)
+	type = db.Column(db.String(64))
+	dataFeeder = db.Column(db.String(132))
+	distance = db.Column(db.Float)
+	comparator = db.Column(db.String(10))
+	# So we could have an attribute that lack of it could indicate that an
+	# area prone to crime right… we could say if square x (of the 2000
+	# some squares we have) is >y distance from some item z we should
+	# say this area is prone to crime
 
 # class SexOffenders(db.Model):
 
