@@ -27,7 +27,7 @@
 				<input class="inputBox" type="text" id="Address" placeholder="Address" />
 				<button class="button" onclick="geocode()">Submit</button>
 				<button class="button" onclick="clearMarkers()">Clear Markers</button>
-		    </div>
+			</div>
 
 			<div class='map-overlay-inner' id="data_view">
 				<h5>Data View Settings</h5>
@@ -83,9 +83,9 @@
 				// Every time we change update the data
 			});
 			document.getElementById('year_val').addEventListener('input', function(e) {
-		        document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
-		        // Every time we change update the data
-	        });
+				document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+				// Every time we change update the data
+			});
 
 			// Clear out marker array and remove all markers from map
 			function clearMarkers() {
@@ -98,12 +98,12 @@
 
 			function toggleMode() {
 				// First turn off all the divs
-			    for (var i = 0; i < mode.options.length; i++) {
-			    	document.getElementById( mode.options[i].value ).style.display = "none";
-			    }
-			    // Then just turn on the one we want
-			    document.getElementById( mode.value ).style.display = "block";
-			    toggleLayers();
+				for (var i = 0; i < mode.options.length; i++) {
+					document.getElementById( mode.options[i].value ).style.display = "none";
+				}
+				// Then just turn on the one we want
+				document.getElementById( mode.value ).style.display = "block";
+				toggleLayers();
 			}
 
 			function toggleLayers() {
@@ -121,9 +121,9 @@
 				pitch:45
 			});
 
-		  	// Navigation controls at top-left corner
-		  	var nav = new mapboxgl.NavigationControl();
-		  	map.addControl(nav, 'top-right');
+			// Navigation controls at top-left corner
+			var nav = new mapboxgl.NavigationControl();
+			map.addControl(nav, 'top-right');
 
 			function getLonLat(){
 				longitude = parseFloat( document.getElementById("Longitude").value );
@@ -132,8 +132,8 @@
 			}
 
 			// Do geocoding of address to lat/long
-		    function geocode() {
-		    	address = document.getElementById("Address").value;
+			function geocode() {
+				address = document.getElementById("Address").value;
 		      $.ajax({
 		        url: 'http://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address='+address+'&benchmark=4&format=jsonp',
 		        dataType: 'jsonp',
