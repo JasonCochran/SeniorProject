@@ -72,19 +72,6 @@
 			mode.options[mode.options.length] = new Option("Recommendations", "rec_view");
 			mode.options[mode.options.length] = new Option("Risk Factors", "risk_view");
 
-			function loadRuns() {
-				// Add available precog runs to data view
-				d3.json('http://localhost:81/precogruns/', function(err, data) {
-					if (err) throw err;
-					// Loop through the data and
-					var select = document.getElementById("precog-select");
-					for (var i = 0; i < data.children.length; i++) {
-						select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
-						console.log(data[i].type);
-					}
-				});
-			}
-
 			// Set the slider disp text values even before user moves the slider
 			document.getElementById('year_val_disp').textContent = 2018;
 			document.getElementById('month_val_disp').textContent = months[0];
@@ -307,6 +294,18 @@
 
 			display_map();
 			toggleMode();
+
+			// Add available precog runs to data view
+			d3.json('http://localhost:81/precogruns/', function(err, data) {
+				if (err) throw err;
+				// Loop through the data and
+				var select = document.getElementById("precog-select");
+				for (var i = 0; i < data.children.length; i++) {
+					select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
+					console.log(data[i].type);
+				}
+			});
+
 		</script>
 
 {% endblock %}
