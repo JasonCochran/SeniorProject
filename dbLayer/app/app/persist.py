@@ -16,7 +16,7 @@ def geojsonConvert_PreCogRuns(queryResult):
 	d = {"name":"PreCogRuns",
 	     "children":[{'type':value,"id":key} for key,value in collection.items()]}
 	json_string = json.dumps(d)
-	print(json_string)
+	# print(json_string)
 	return json_string
 
 
@@ -29,7 +29,7 @@ def geojsonConvert_Predictions(queryResult):
 		feature = geojson.Feature(geometry= point , properties={"certainty": data.certainty} )
 		collection.append(feature)
 	dump = geojson.dumps(geojson.FeatureCollection(collection))
-	print(dump)
+	# print(dump)
 	return dump
 
 
