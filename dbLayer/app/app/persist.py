@@ -56,5 +56,3 @@ def persist_available_runs():
 	with codecs.open( file_path, 'w', encoding="utf8") as fo:
 		fo.write(json)
 
-
-persistRun("6", "6")
