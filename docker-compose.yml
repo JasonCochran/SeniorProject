@@ -34,7 +34,7 @@ services:
          - env_file
       volumes:
          - ./precog/app:/app
-   NN_precog:
+   nn_precog:
       build:
          context: NN_precog
       ports:
