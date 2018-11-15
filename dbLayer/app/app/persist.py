@@ -26,7 +26,8 @@ def geojsonConvert_Predictions(queryResult):
 	print(queryResult.size)
 	for data in queryResult.itertuples(index=True, name='Pandas'):
 		point = geojson.Point(( data[1] , data[2] ))
-		feature = geojson.Feature(geometry= point , properties={"certainty": data.certainty} )
+		date = ""
+		feature = geojson.Feature(geometry= point , properties={"certainty": data.certainty, "date": date} )
 		collection.append(feature)
 	dump = geojson.dumps(geojson.FeatureCollection(collection))
 	print(dump)

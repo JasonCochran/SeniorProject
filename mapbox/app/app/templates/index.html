@@ -60,7 +60,11 @@
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
+			// Create some arrays for references
 			var markers = new Array();
+			var dataLayers = new Array();
+			var riskFactorLayers = new Array();
+			var recommendationLayers = new Array();
 			var months = [
 			    'January', 'February', 'March', 'April', 'May', 'June',
 			    'July', 'August', 'September', 'October', 'November', 'December'
@@ -103,11 +107,24 @@
 				}
 				// Then just turn on the one we want
 				document.getElementById( mode.value ).style.display = "block";
-				toggleLayers();
+				toggleLayers(mode.value);
 			}
 
-			function toggleLayers() {
+			function toggleLayers(toggleTo) {
 				// Switch to layers for this mode
+				var desiredId = 'precog';
+				var layers = map.getStyle().layers;
+			    for (var i = 0; i < layers.length; i++) {
+			    	if (desiredId == layers[i].id ) {
+			    		var visibility = map.getLayoutProperty(layers[i].id, 'visibility');
+
+				        if (visibility === 'visible') {
+				            map.setLayoutProperty(layers[i].id, 'visibility', 'none');
+				        } else {
+				            map.setLayoutProperty(layers[i].id, 'visibility', 'visible');
+				        }
+			    	}
+			    }
 			}
 
 			// Create map
@@ -158,60 +175,6 @@
 
 		    // Function to call to add layers
 		    function display_map() {
-
-				d3.json('http://localhost:81/prediction/1', function(err, data) {
-					if (err) throw err;
-
-			        map.addSource('crime_heatmap', {
-					    type: 'geojson',
-					    data: data
-					});
-
-					map.addLayer({
-					    id: 'precog_heatmap',
-					    source: 'crime_heatmap',
-					    type: 'heatmap',
-					    paint: {
-					        "heatmap-radius": [
-				                "interpolate",
-				                ["linear"],
-				                ["zoom"],
-				                6, 20,
-			                    8, 40
-				            ],
-					        "heatmap-color": [
-				                "interpolate",
-				                ["linear"],
-				                ["heatmap-density"],
-				                0, "rgba(33,102,172,0)",
-				                0.2, "rgb(103,169,207)",
-				                0.4, "rgb(209,229,240)",
-				                0.6, "rgb(253,219,199)",
-				                0.8, "rgb(239,138,98)",
-				                1, "rgb(178,24,43)"
-				            ],
-							"heatmap-weight": [
-				                "interpolate",
-				                ["linear"],
-				                ["get", "certainty"],
-				                0, 0,
-				                6, 10
-				            ],
-				            "heatmap-opacity": [
-				                "interpolate",
-				                ["linear"],
-				                ["zoom"],
-				                7, 1,
-				                9, .7
-				            ]
-					    }
-					});
-
-			        // Set filter to first month of the year
-			        // 0 = January
-			        // filterBy(0);
-
-				}); // d3
 				
 			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
 					if (err) throw err;
@@ -250,7 +213,7 @@
 				}); // d3
 
 				map.on('load', function() {
-				    // Insert the layer beneath any symbol layer.
+				/*    // Insert the layer beneath any symbol layer.
 				    var layers = map.getStyle().layers;
 				    var labelLayerId;
 				    for (var i = 0; i < layers.length; i++) {
@@ -258,10 +221,62 @@
 				            labelLayerId = layers[i].id;
 				            break;
 				        }
-				    }
-					// Create new layers here
+				    } */
 
-					// Load
+					d3.json('http://localhost:81/prediction/1', function(err, data) {
+						if (err) throw err;
+
+				        map.addSource('crime_heatmap', {
+						    type: 'geojson',
+						    data: data
+						});
+
+						map.addLayer({
+						    id: 'precog_heatmap',
+						    source: 'crime_heatmap',
+						    type: 'heatmap',
+						    paint: {
+						        "heatmap-radius": [
+					                "interpolate",
+					                ["linear"],
+					                ["zoom"],
+					                6, 20,
+				                    8, 40
+					            ],
+						        "heatmap-color": [
+					                "interpolate",
+					                ["linear"],
+					                ["heatmap-density"],
+					                0, "rgba(33,102,172,0)",
+					                0.2, "rgb(103,169,207)",
+					                0.4, "rgb(209,229,240)",
+					                0.6, "rgb(253,219,199)",
+					                0.8, "rgb(239,138,98)",
+					                1, "rgb(178,24,43)"
+					            ],
+								"heatmap-weight": [
+					                "interpolate",
+					                ["linear"],
+					                ["get", "certainty"],
+					                0, 0,
+					                6, 10
+					            ],
+					            "heatmap-opacity": [
+					                "interpolate",
+					                ["linear"],
+					                ["zoom"],
+					                7, 1,
+					                9, .7
+					            ]
+						    }
+						});
+
+					    // Set filter to first month of the year
+					    // 0 = January
+					    // filterBy(0);
+
+					}); // d3
+
 /*
 					// 3D Building layer
 				    map.addLayer({
@@ -302,7 +317,7 @@
 				var select = document.getElementById("precog-select");
 				for (var i = 0; i < data.children.length; i++) {
 					select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
-					console.log(data[i].type);
+					console.log(data.children[i].type);
 				}
 			});
 
