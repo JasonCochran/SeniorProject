@@ -68,7 +68,7 @@ def commitToDB(rf):
     #                            pred.type = 'general'
     #                            pred.precog = 'basic_ml'
                             pred.datetime = datetime.datetime(year, month, 1)
-                            pred.location = "POINT( " + str(x) + " " + str(y) + " )"
+                            pred.location = "POINT( " + str(centerLon) + " " + str(centerLat) + " )"
                             db.session.add(pred)
                             countIndex = countIndex + 1
         db.session.commit()
@@ -126,7 +126,7 @@ def runStats():
                     for month in months:
                         monthResult = yearResult.filter(and_(func.extract('month',Incident.date)==month),Incident.FBIcode=="06")
                         count = monthResult.count()
-                        boxes.append([centerLat,centerLon,year,month])
+                        boxes.append([centerLon,centerLat,year,month])
                         crimeCounts.append(count)
                         if count>maxCrimes:
                             maxCrimes=count
@@ -159,7 +159,7 @@ def runStats():
                     for month in months:
                         monthResult = yearResult.filter(and_(func.extract('month',Incident.date)==month),Incident.FBIcode=="06")
                         count = monthResult.count()
-                        testboxes.append([centerLat,centerLon,year,month])
+                        testboxes.append([centerLon,centerLat,year,month])
                         testcrimeCounts.append(count)
                         if count>maxCrimes:
                             maxCrimes=count
