@@ -107,7 +107,7 @@
 				}
 				// Then just turn on the one we want
 				document.getElementById( mode.value ).style.display = "block";
-				toggleLayers(mode.value);
+				// toggleLayers(mode.value);
 			}
 
 			function toggleLayers(toggleTo) {
@@ -176,7 +176,7 @@
 		    // Function to call to add layers
 		    function display_map() {
 				
-			  	d3.json('http://localhost:81/prediction/5', function(err, data) {
+			  	d3.json('http://localhost:81/prediction/2', function(err, data) {
 					if (err) throw err;
 
 					// Create a month property value based on time
@@ -201,8 +201,8 @@
 			                    'interpolate',
 			                    ['linear'],
 			                    ['get', 'certainty'],
-			                    6, 20,
-			                    8, 40
+			                    6, 1,
+			                    8, 5
 			                ]
 			            }
 			        });
@@ -223,6 +223,68 @@
 				        }
 				    } */
 
+				    // Programmatically load all pre cog files
+				    var select = document.getElementById("precog-select");
+				    for (var index = 0; index < select.length; index++) {
+				    	console.log(index);
+				    	var url = 'http://localhost:81/prediction/' + select.options[index].value
+						//d3.json( url, function(err, data) {
+						//	if (err) throw err;
+
+					        map.addSource('precogData_' + select.options[index].value , {
+							    type: 'geojson',
+							    // data: data
+							    data: ('http://localhost:81/prediction/' + select.options[index].value)
+							});
+
+							map.addLayer({
+							    id: 'precog_heatmap_' + select.options[index].value,
+							    source: 'precogData_' + select.options[index].value,
+							    type: 'heatmap',
+							    paint: {
+							        "heatmap-radius": [
+						                "interpolate",
+						                ["linear"],
+						                ["zoom"],
+						                6, 20,
+					                    8, 40
+						            ],
+							        "heatmap-color": [
+						                "interpolate",
+						                ["linear"],
+						                ["heatmap-density"],
+						                0, "rgba(33,102,172,0)",
+						                0.2, "rgb(103,169,207)",
+						                0.4, "rgb(209,229,240)",
+						                0.6, "rgb(253,219,199)",
+						                0.8, "rgb(239,138,98)",
+						                1, "rgb(178,24,43)"
+						            ],
+									"heatmap-weight": [
+						                "interpolate",
+						                ["linear"],
+						                ["get", "certainty"],
+						                0, 0,
+						                6, 10
+						            ],
+						            "heatmap-opacity": [
+						                "interpolate",
+						                ["linear"],
+						                ["zoom"],
+						                7, 1,
+						                9, .7
+						            ]
+							    }
+							});
+
+						    // Set filter to first month of the year
+						    // 0 = January
+						    // filterBy(0);
+
+						// }); // d3
+					}
+
+					/*
 					d3.json('http://localhost:81/prediction/1', function(err, data) {
 						if (err) throw err;
 
@@ -276,7 +338,7 @@
 					    // filterBy(0);
 
 					}); // d3
-
+*/
 /*
 					// 3D Building layer
 				    map.addLayer({
@@ -307,9 +369,6 @@
 				}); // on load
 			} // display_map()
 
-			display_map();
-			toggleMode();
-
 			// Add available precog runs to data view
 			d3.json('http://localhost:81/precogruns/', function(err, data) {
 				if (err) throw err;
@@ -320,6 +379,9 @@
 					console.log(data.children[i].type);
 				}
 			});
+
+			display_map();
+			toggleMode();
 
 		</script>
 
