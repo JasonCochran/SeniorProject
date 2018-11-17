@@ -134,6 +134,7 @@
 				center: [longitude,latitude],
 				zoom: 10,
 				minZoom: 9,
+				maxZoom: 20,
 				bearing: -17.6,
 				pitch:45
 			});
@@ -175,7 +176,7 @@
 
 		    // Function to call to add layers
 		    function display_map() {
-				
+				/*
 			  	d3.json('http://localhost:81/prediction/2', function(err, data) {
 					if (err) throw err;
 
@@ -211,7 +212,7 @@
 			        // 0 = January
 			        // filterBy(0);
 				}); // d3
-
+*/
 				map.on('load', function() {
 				/*    // Insert the layer beneath any symbol layer.
 				    var layers = map.getStyle().layers;
@@ -246,33 +247,33 @@
 						                "interpolate",
 						                ["linear"],
 						                ["zoom"],
-						                6, 20,
-					                    8, 40
+						                9, 15,
+					                    20, 800
 						            ],
 							        "heatmap-color": [
 						                "interpolate",
 						                ["linear"],
 						                ["heatmap-density"],
 						                0, "rgba(33,102,172,0)",
-						                0.2, "rgb(103,169,207)",
-						                0.4, "rgb(209,229,240)",
-						                0.6, "rgb(253,219,199)",
-						                0.8, "rgb(239,138,98)",
-						                1, "rgb(178,24,43)"
+						                .33, "rgb(103,169,207)",
+						                .66, "rgb(209,229,240)",
+						                .75, "rgb(253,219,199)",
+						                1.33, "rgb(239,138,98)",
+						                1.66, "rgb(178,24,43)"
 						            ],
 									"heatmap-weight": [
 						                "interpolate",
 						                ["linear"],
 						                ["get", "certainty"],
 						                0, 0,
-						                6, 10
+						                1200, 1
 						            ],
 						            "heatmap-opacity": [
 						                "interpolate",
 						                ["linear"],
 						                ["zoom"],
-						                7, 1,
-						                9, .7
+						                9, .8,
+						                20, .4
 						            ]
 							    }
 							});
