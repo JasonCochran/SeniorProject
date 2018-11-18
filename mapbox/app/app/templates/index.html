@@ -65,6 +65,8 @@
 			var dataLayers = new Array();
 			var riskFactorLayers = new Array();
 			var recommendationLayers = new Array();
+			var month = 0;
+			var year = 2018;
 			var months = [
 			    'January', 'February', 'March', 'April', 'May', 'June',
 			    'July', 'August', 'September', 'October', 'November', 'December'
@@ -82,13 +84,16 @@
 
 			// Event calls for when we change the sliders
 			document.getElementById('month_val').addEventListener('input', function(e) {
-				var month = parseInt(e.target.value, 10);
+				month = parseInt(e.target.value, 10);
 				document.getElementById('month_val_disp').textContent = months[month];
 				// Every time we change update the data
+				filterBy(month, year);
 			});
 			document.getElementById('year_val').addEventListener('input', function(e) {
-				document.getElementById('year_val_disp').textContent = parseInt(e.target.value, 10);
+				year = parseInt(e.target.value, 10);
+				document.getElementById('year_val_disp').textContent = year;
 				// Every time we change update the data
+				filterBy(month, year);
 			});
 
 			// Clear out marker array and remove all markers from map
@@ -174,6 +179,12 @@
 			  	markers.push(marker);
 		    }
 
+			function filterBy(month, year) {
+				var dt = month + "-" + year
+			    var filters = ['==', 'date', dt];
+			    map.setFilter('precog_heatmap_2', filters);
+			}
+
 		    // Function to call to add layers
 		    function display_map() {
 				/*
@@ -214,16 +225,6 @@
 				}); // d3
 */
 				map.on('load', function() {
-				/*    // Insert the layer beneath any symbol layer.
-				    var layers = map.getStyle().layers;
-				    var labelLayerId;
-				    for (var i = 0; i < layers.length; i++) {
-				        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-				            labelLayerId = layers[i].id;
-				            break;
-				        }
-				    } */
-
 				    // Programmatically load all pre cog files
 				    var select = document.getElementById("precog-select");
 				    for (var index = 0; index < select.length; index++) {
@@ -280,7 +281,7 @@
 
 						    // Set filter to first month of the year
 						    // 0 = January
-						    // filterBy(0);
+						    // filterBy(month, year);
 
 						// }); // d3
 					}

@@ -4,6 +4,7 @@ from app import db
 from app.models import PreCogRun, Prediction
 import geojson, os, codecs
 import pandas as pd
+import datetime
 import json
 
 
@@ -26,17 +27,17 @@ def geojsonConvert_Predictions(queryResult):
 	print(queryResult.size)
 	for data in queryResult.itertuples(index=True, name='Pandas'):
 		point = geojson.Point(( data[1] , data[2] ))
-		date = ""
+		date = str(data.datetime.month) + "-" + str(data.datetime.year)
 		feature = geojson.Feature(geometry= point , properties={"certainty": data.certainty, "date": date} )
 		collection.append(feature)
 	dump = geojson.dumps(geojson.FeatureCollection(collection))
-	print(dump)
+	# print(dump)
 	return dump
 
 
 # Persist a specific precog run from db
 def persistRun(runID, filename):
-	result = db.session.query( func.ST_X(Prediction.location), func.ST_Y(Prediction.location), Prediction.certainty ).filter(Prediction.precogrun == runID)
+	result = db.session.query( func.ST_X(Prediction.location), func.ST_Y(Prediction.location), Prediction.certainty, Prediction.datetime ).filter(Prediction.precogrun == runID)
 	data = pd.read_sql( result.statement , result.session.bind)
 	geojson = geojsonConvert_Predictions(data)
 	file_path = os.path.join("/app/app/static", filename + ".geojson")
