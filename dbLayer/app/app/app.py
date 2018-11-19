@@ -42,6 +42,32 @@ def getPreCogRuns():
 	return response
 
 
+# Get list of all available precog runs (with all associated metadata)
+@app.route('/recommendations/', methods=['GET'])
+def getRecommendations():
+	persist.persist_recommendations()
+	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
+	file_path = os.path.join(static_file_dir, "recommendations.geojson")
+	with open(file_path, 'r') as file_data:
+		json_data = json.load(file_data)
+	response = jsonify(json_data)
+	response.headers.add('Access-Control-Allow-Origin', '*')
+	return response
+
+
+# Get list of all available precog runs (with all associated metadata)
+# @app.route('/riskFactors/', methods=['GET'])
+# def getPreCogRuns():
+# 	persist.persist_riskFactors()
+# 	static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
+# 	file_path = os.path.join(static_file_dir, "riskFactors.json")
+# 	with open(file_path, 'r') as file_data:
+# 		json_data = json.load(file_data)
+# 	response = jsonify(json_data)
+# 	response.headers.add('Access-Control-Allow-Origin', '*')
+# 	return response
+
+
 # Get specific set of predictions based on precog run ID
 @app.route('/prediction/<ID>', methods=['GET'])
 def getPredictions(ID):
