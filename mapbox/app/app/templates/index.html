@@ -82,6 +82,7 @@
 			mode.options[mode.options.length] = new Option("Recommendations", "rec_view");
 			mode.options[mode.options.length] = new Option("Risk Factors", "risk_view");
 
+			// Data view sliders
 			// Set the slider disp text values even before user moves the slider
 			document.getElementById('year_val_disp').textContent = 2018;
 			document.getElementById('month_val_disp').textContent = months[0];
@@ -98,6 +99,18 @@
 				document.getElementById('year_val_disp').textContent = year;
 				// Every time we change update the data
 				filterBy(month, year);
+			});
+
+			// Data view dropdown
+			document.getElementById('precog-select').addEventListener('change', function(e) {
+				// Select which precog layer we want to display
+				toggleModesLayer( document.getElementById('precog-select').value, dataLayers)
+			});
+
+			// Risk factor view drop down
+			document.getElementById('riskFactors-select').addEventListener('change', function(e) {
+				// Select which risk factor we want to display
+				toggleModesLayer( document.getElementById('riskFactors-select').value, modeLayerVector)
 			});
 
 			// Clear out marker array and remove all markers from map
@@ -142,13 +155,13 @@
 			    }
 			}
 
-			function toggleDataLayer(toggleToId) {
+			function toggleModesLayer(toggleToId, modeLayerVector) {
 				// toggleToId format: 'precog_heatmap_#'
-				for (var i = 0; i < dataLayers.length; i++) {
-					if (toggleToId == dataLayers[i] ) {
-						showLayer(dataLayers[i]);
+				for (var i = 0; i < modeLayerVector.length; i++) {
+					if (toggleToId == modeLayerVector[i] ) {
+						showLayer(modeLayerVector[i]);
 					} else {
-						hideLayer(dataLayers[i]);
+						hideLayer(modeLayerVector[i]);
 					}
 				}
 			}
