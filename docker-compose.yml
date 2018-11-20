@@ -34,6 +34,18 @@ services:
          - env_file
       volumes:
          - ./precog/app:/app
+   nn_precog:
+      build:
+         context: NN_precog
+      ports:
+         - "87:80"
+      restart: always
+      networks:
+         - db_nw
+      env_file:
+         - env_file
+      volumes:
+         - ./NN_precog/app:/app
    rec_eng:
       build:
          context: rec_eng

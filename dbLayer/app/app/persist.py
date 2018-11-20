@@ -18,7 +18,7 @@ def geojsonConvert_PreCogRuns(queryResult):
 	d = {"name":"PreCogRuns",
 	     "children":[{'type':value,"id":key} for key,value in collection.items()]}
 	json_string = json.dumps(d)
-	print(json_string)
+	# print(json_string)
 	return json_string
 
 
