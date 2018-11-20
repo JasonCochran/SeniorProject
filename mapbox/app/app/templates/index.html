@@ -44,13 +44,13 @@
 
 			<div class='map-overlay-inner' id="rec_view">
 				<h5>Recommendation Settings </h5>
-				<h6>What % of recs would we like to see? Number indicates what drop in crime is predicated for that recommendation if put into affect</h6>
-				<h6>Slider for percentage here?</h6>
+				<h6>Click on each dot to see information about that particular recommendation.</h6>
 			</div>
 
 			<div class='map-overlay-inner' id="risk_view">
 				<h5>Risk Factors</h5>
-				<h6>drop down for all the risk factors we calculate? e.g. food desert, transportation desert, lack of parks, business closings etc.</h6>
+				<h6>Select a risk factor from the drop down to view the heatmap for it.</h6>
+				<select id="riskFactors-select"></select>
 			</div>
 
 		</div>
@@ -60,11 +60,15 @@
 			var longitude = -87.6298;
 			var latitude = 41.8781;
 			var address = '1200 S Lake Shore Dr, Chicago, IL 60605';
-			// Create some arrays for references
+			// Map markers array
 			var markers = new Array();
+
+			// Layer control variables
+			var allLayers = new Array();
 			var dataLayers = new Array();
 			var riskFactorLayers = new Array();
 			var recommendationLayers = new Array();
+
 			var month = 0;
 			var year = 2018;
 			var months = [
@@ -78,6 +82,7 @@
 			mode.options[mode.options.length] = new Option("Recommendations", "rec_view");
 			mode.options[mode.options.length] = new Option("Risk Factors", "risk_view");
 
+			// Data view sliders
 			// Set the slider disp text values even before user moves the slider
 			document.getElementById('year_val_disp').textContent = 2018;
 			document.getElementById('month_val_disp').textContent = months[0];
@@ -96,6 +101,18 @@
 				filterBy(month, year);
 			});
 
+			// Data view dropdown
+			document.getElementById('precog-select').addEventListener('change', function(e) {
+				// Select which precog layer we want to display
+				toggleModesLayer( document.getElementById('precog-select').value, dataLayers)
+			});
+
+			// Risk factor view drop down
+			document.getElementById('riskFactors-select').addEventListener('change', function(e) {
+				// Select which risk factor we want to display
+				toggleModesLayer( document.getElementById('riskFactors-select').value, modeLayerVector)
+			});
+
 			// Clear out marker array and remove all markers from map
 			function clearMarkers() {
 				for (var i = 0; i < markers.length; i++) {
@@ -112,24 +129,57 @@
 				}
 				// Then just turn on the one we want
 				document.getElementById( mode.value ).style.display = "block";
-				// toggleLayers(mode.value);
+
+				if(mode.value === 'data_view') {
+					toggleLayers(riskFactorLayers,'none');
+					toggleLayers(recommendationLayers,'none');
+					toggleLayers(dataLayers,'visible');
+				} else if (mode.value === 'rec_view') {
+					toggleLayers(riskFactorLayers,'none');
+					toggleLayers(dataLayers,'none');
+					toggleLayers(recommendationLayers,'visible');
+				} else if(mode.value === 'risk_view') {
+					toggleLayers(dataLayers,'none');
+					toggleLayers(recommendationLayers,'none');
+					toggleLayers(riskFactorLayers,'visible');
+				}
 			}
 
-			function toggleLayers(toggleTo) {
-				// Switch to layers for this mode
-				var desiredId = 'precog';
-				var layers = map.getStyle().layers;
-			    for (var i = 0; i < layers.length; i++) {
-			    	if (desiredId == layers[i].id ) {
-			    		var visibility = map.getLayoutProperty(layers[i].id, 'visibility');
-
-				        if (visibility === 'visible') {
-				            map.setLayoutProperty(layers[i].id, 'visibility', 'none');
-				        } else {
-				            map.setLayoutProperty(layers[i].id, 'visibility', 'visible');
-				        }
+			function toggleLayers(layerIds, visibility) {
+			    for (var i = 0; i < layerIds.length; i++) {
+			    	if (visibility == 'visible') {
+			    		showLayer(layerIds[i]);
+			    	} else {
+			    		hideLayer(layerIds[i]);
 			    	}
 			    }
+			}
+
+			function toggleModesLayer(toggleToId, modeLayerVector) {
+				// toggleToId format: 'precog_heatmap_#'
+				for (var i = 0; i < modeLayerVector.length; i++) {
+					if (toggleToId == modeLayerVector[i] ) {
+						showLayer(modeLayerVector[i]);
+					} else {
+						hideLayer(modeLayerVector[i]);
+					}
+				}
+			}
+
+			function hideLayer(layerId) {
+	    		var visibility = map.getLayoutProperty(layerId, 'visibility');
+
+		        if (visibility === 'visible') {
+		            map.setLayoutProperty(layerId, 'visibility', 'none');
+		        }
+			}
+
+			function showLayer(layerId) {
+	    		var visibility = map.getLayoutProperty(layerId, 'visibility');
+
+		        if (visibility === 'none') {
+		            map.setLayoutProperty(layerId, 'visibility', 'visible');
+		        }
 			}
 
 			// Create map
@@ -187,187 +237,169 @@
 
 		    // Function to call to add layers
 		    function display_map() {
-				/*
-			  	d3.json('http://localhost:81/prediction/2', function(err, data) {
-					if (err) throw err;
-
-					// Create a month property value based on time
-					// used to filter against.
-					//data.features = data.features.map(function(d) {
-					//    d.properties.month = new Date(d.properties.time).getMonth();
-					//   return d;
-					//});
-
-			        map.addSource('precog_data', {
-			            'type': 'geojson',
-			            'data': data
-			        });
-
-			        map.addLayer({
-			            'id': 'precog',
-			            'type': 'circle',
-			            'source': 'precog_data',
-			            'paint': {
-			                'circle-color': '#D49A66',
-			                'circle-radius': [
-			                    'interpolate',
-			                    ['linear'],
-			                    ['get', 'certainty'],
-			                    6, 1,
-			                    8, 5
-			                ]
-			            }
-			        });
-
-			        // Set filter to first month of the year
-			        // 0 = January
-			        // filterBy(0);
-				}); // d3
-*/
 				map.on('load', function() {
 				    // Programmatically load all pre cog files
 				    var select = document.getElementById("precog-select");
 				    for (var index = 0; index < select.length; index++) {
-				    	console.log(index);
+				    	// console.log(index);
 				    	var url = 'http://localhost:81/prediction/' + select.options[index].value
-						//d3.json( url, function(err, data) {
-						//	if (err) throw err;
 
-					        map.addSource('precogData_' + select.options[index].value , {
-							    type: 'geojson',
-							    // data: data
-							    data: ('http://localhost:81/prediction/' + select.options[index].value)
-							});
-
-							map.addLayer({
-							    id: 'precog_heatmap_' + select.options[index].value,
-							    source: 'precogData_' + select.options[index].value,
-							    type: 'heatmap',
-							    paint: {
-							        "heatmap-radius": [
-						                "interpolate",
-						                ["linear"],
-						                ["zoom"],
-						                9, 15,
-					                    20, 800
-						            ],
-							        "heatmap-color": [
-						                "interpolate",
-						                ["linear"],
-						                ["heatmap-density"],
-						                0, "rgba(33,102,172,0)",
-						                .33, "rgb(103,169,207)",
-						                .66, "rgb(209,229,240)",
-						                .75, "rgb(253,219,199)",
-						                1.33, "rgb(239,138,98)",
-						                1.66, "rgb(178,24,43)"
-						            ],
-									"heatmap-weight": [
-						                "interpolate",
-						                ["linear"],
-						                ["get", "certainty"],
-						                0, 0,
-						                1200, 1
-						            ],
-						            "heatmap-opacity": [
-						                "interpolate",
-						                ["linear"],
-						                ["zoom"],
-						                9, .8,
-						                20, .4
-						            ]
-							    }
-							});
-
-						    // Set filter to first month of the year
-						    // 0 = January
-						    // filterBy(month, year);
-
-						// }); // d3
-					}
-
-					/*
-					d3.json('http://localhost:81/prediction/1', function(err, data) {
-						if (err) throw err;
-
-				        map.addSource('crime_heatmap', {
+				        map.addSource('precogData_' + select.options[index].value , {
 						    type: 'geojson',
-						    data: data
+						    data: ('http://localhost:81/prediction/' + select.options[index].value)
 						});
 
+				        allLayers.push('precog_heatmap_' + select.options[index].value);
+				        dataLayers.push('precog_heatmap_' + select.options[index].value);
+
 						map.addLayer({
-						    id: 'precog_heatmap',
-						    source: 'crime_heatmap',
+						    id: 'precog_heatmap_' + select.options[index].value,
+						    source: 'precogData_' + select.options[index].value,
 						    type: 'heatmap',
 						    paint: {
 						        "heatmap-radius": [
 					                "interpolate",
 					                ["linear"],
 					                ["zoom"],
-					                6, 20,
-				                    8, 40
+					                9, 15,
+				                    20, 800
 					            ],
 						        "heatmap-color": [
 					                "interpolate",
 					                ["linear"],
 					                ["heatmap-density"],
 					                0, "rgba(33,102,172,0)",
-					                0.2, "rgb(103,169,207)",
-					                0.4, "rgb(209,229,240)",
-					                0.6, "rgb(253,219,199)",
-					                0.8, "rgb(239,138,98)",
-					                1, "rgb(178,24,43)"
+					                .33, "rgb(103,169,207)",
+					                .66, "rgb(209,229,240)",
+					                .75, "rgb(253,219,199)",
+					                1.33, "rgb(239,138,98)",
+					                1.66, "rgb(178,24,43)"
 					            ],
 								"heatmap-weight": [
 					                "interpolate",
 					                ["linear"],
 					                ["get", "certainty"],
 					                0, 0,
-					                6, 10
+					                1200, 1
 					            ],
 					            "heatmap-opacity": [
 					                "interpolate",
 					                ["linear"],
 					                ["zoom"],
-					                7, 1,
-					                9, .7
+					                9, .8,
+					                20, .4
 					            ]
 						    }
 						});
+					}
 
-					    // Set filter to first month of the year
-					    // 0 = January
-					    // filterBy(0);
+					
+					// Recommendations
+					allLayers.push('recommendations')
+					recommendationLayers.push('recommendations');
+				  	d3.json('http://localhost:81/recommendations/', function(err, data) {
+						if (err) throw err;
 
+				        map.addSource('recommendation_data', {
+				            'type': 'geojson',
+				            'data': data
+				        });
+
+				        map.addLayer({
+				            'id': 'recommendations',
+				            'type': 'circle',
+				            'source': 'recommendation_data',
+				            'paint': {
+				                'circle-color': '#D49A66'
+				            }
+				        });
 					}); // d3
-*/
-/*
-					// 3D Building layer
-				    map.addLayer({
-				        'id': '3d-buildings',
-				        'source': 'composite',
-				        'source-layer': 'building',
-				        'filter': ['==', 'extrude', 'true'],
-				        'type': 'fill-extrusion',
-				        'minzoom': 15,
-				        'paint': {
-				            'fill-extrusion-color': '#aaa',
-				            // use an 'interpolate' expression to add a smooth transition
-				            // effect to the buildings as the user zooms in
-				            'fill-extrusion-height': [
-				                "interpolate", ["linear"], ["zoom"],
-				                15, 0,
-				                15.05, ["get", "height"]
-				            ],
-				            'fill-extrusion-base': [
-				                "interpolate", ["linear"], ["zoom"],
-				                15, 0,
-				                15.05, ["get", "min_height"]
-				            ],
-				            'fill-extrusion-opacity': .6
+
+				  	map.on('click', 'recommendations', function (e) {
+				        var coordinates = e.features[0].geometry.coordinates.slice();
+				        var rec = e.features[0].properties.rec;
+
+				        // Ensure that if the map is zoomed out such that multiple
+				        // copies of the feature are visible, the popup appears
+				        // over the copy being pointed to.
+				        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 				        }
-				    }, labelLayerId);
+
+				        new mapboxgl.Popup()
+				            .setLngLat(coordinates)
+				            .setHTML(rec)
+				            .addTo(map);
+				    });
+
+				    // Change the cursor to a pointer when the mouse is over the places layer.
+				    map.on('mouseenter', 'recommendations', function () {
+				        map.getCanvas().style.cursor = 'pointer';
+				    });
+
+				    // Change it back to a pointer when it leaves.
+				    map.on('mouseleave', 'recommendations', function () {
+				        map.getCanvas().style.cursor = '';
+				    });
+
+/*
+					// Risk factors
+					var select = document.getElementById("riskFactors-select");
+				    for (var index = 0; index < select.length; index++) {
+				    	// console.log(index);
+				    	var url = 'http://localhost:81/prediction/' + select.options[index].value
+
+				        map.addSource('riskFactorsData_' + select.options[index].value , {
+						    type: 'geojson',
+						    // data: data
+						    data: ('http://localhost:81/riskFactors/' + select.options[index].value)
+						});
+
+						allLayers.push('riskFactors_heatmap_' + select.options[index].value)
+						riskFactorLayers.push('riskFactors_heatmap_' + select.options[index].value);
+
+						map.addLayer({
+						    id: 'riskFactors_heatmap_' + select.options[index].value,
+						    source: 'riskFactorsData_' + select.options[index].value,
+						    type: 'heatmap',
+						    paint: {
+						        "heatmap-radius": [
+					                "interpolate",
+					                ["linear"],
+					                ["zoom"],
+					                9, 15,
+				                    20, 800
+					            ],
+						        "heatmap-color": [
+					                "interpolate",
+					                ["linear"],
+					                ["heatmap-density"],
+					                0, "rgba(33,102,172,0)",
+					                .33, "rgb(103,169,207)",
+					                .66, "rgb(209,229,240)",
+					                .75, "rgb(253,219,199)",
+					                1.33, "rgb(239,138,98)",
+					                1.66, "rgb(178,24,43)"
+					            ],
+								"heatmap-weight": [
+					                "interpolate",
+					                ["linear"],
+					                ["get", "certainty"],
+					                0, 0,
+					                1200, 1
+					            ],
+					            "heatmap-opacity": [
+					                "interpolate",
+					                ["linear"],
+					                ["zoom"],
+					                9, .8,
+					                20, .4
+					            ]
+						    }
+						});
+					} // Risk factors
 */
+
 				}); // on load
 			} // display_map()
 
@@ -378,10 +410,21 @@
 				var select = document.getElementById("precog-select");
 				for (var i = 0; i < data.children.length; i++) {
 					select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
+					// console.log(data.children[i].type);
+				}
+			});
+/*
+			// Add available risk factors to list
+			d3.json('http://localhost:81/riskFactors/', function(err, data) {
+				if (err) throw err;
+				// Loop through the data and
+				var select = document.getElementById("riskFactors-select");
+				for (var i = 0; i < data.children.length; i++) {
+					select.options[select.options.length] = new Option(data.children[i].type, data.children[i].id);
 					console.log(data.children[i].type);
 				}
 			});
-
+*/
 			display_map();
 			toggleMode();
 
