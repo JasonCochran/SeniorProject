@@ -35,3 +35,8 @@ def createRecommendations():
 			crimeCount = db.session.query(Incident).filter(Incident.location.contained(box)).count()
 			riskMatrix(x, y, 0) = crimeCount
 
+			# Run some statistics to determine what areas we could help the most...
+			# Once we assign overall 'badness' score and find top 5...
+			# We should determine what we can do to help these areas
+			# Use the highest of the 3 risk scores to determine what a solution could be
+
