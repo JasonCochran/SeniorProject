@@ -6,3 +6,7 @@ import os, sys
 @app.route('/')
 def index():
         return 'Pre-Crime Division - Pre Cog'	
+
+@app.route('/heartbeart', methods=['GET'])
+def heartbeat(run_info):
+	return ('', 204)

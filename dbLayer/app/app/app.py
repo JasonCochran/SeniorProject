@@ -87,3 +87,8 @@ def persistEndpoint(run_info):
 	filename = run_info
 	result = persist.persistRun(run_info, filename)
 	return ('', 204)
+
+
+@app.route('/heartbeart', methods=['GET'])
+def heartbeat(run_info):
+	return ('', 204)
