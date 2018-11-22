@@ -7,15 +7,42 @@
 {% block page_content %}
 		<!--<div class="container"> -->
 			<div class="container">
-				Database Cache: {{ dbLayer }}
+				<h1>Service Health</h1>
 				<br>
-				Random Forest Precog: {{ precog }}
+				Database Cache:
+					{% if dbLayer == '1' %}
+					     <img src="{{ url_for('static', filename='greenheart.jpg') }}" style="height:50px;display:inline-block;">
+					{% else %}
+					     <img src="{{ url_for('static', filename='emptyheart.png') }}" style="height:50px;display:inline-block;">
+					{% endif %}
 				<br>
-				Neural Network Precog: {{ nn_precog }}
+				Random Forest Precog:
+					{% if precog == '1' %}
+					     <img src="{{ url_for('static', filename='greenheart.jpg') }}" style="height:50px;display:inline-block;">
+					{% else %}
+					     <img src="{{ url_for('static', filename='emptyheart.png') }}" style="height:50px;display:inline-block;">
+					{% endif %}
 				<br>
-				Statistics Precog: {{ stat_precog }}
+				Neural Network Precog:
+					{% if nn_precog == '1' %}
+					     <img src="{{ url_for('static', filename='greenheart.jpg') }}" style="height:50px;display:inline-block;">
+					{% else %}
+					     <img src="{{ url_for('static', filename='emptyheart.png') }}" style="height:50px;display:inline-block;">
+					{% endif %}
 				<br>
-				Recommendation Engine: {{ rec_eng }}
+				Statistics Precog:
+					{% if stat_precog == '1' %}
+					     <img src="{{ url_for('static', filename='greenheart.jpg') }}" style="height:50px;display:inline-block;">
+					{% else %}
+					     <img src="{{ url_for('static', filename='emptyheart.png') }}" style="height:50px;display:inline-block;">
+					{% endif %}
+				<br>
+				Recommendation Engine:
+					{% if rec_eng == '1' %}
+					     <img src="{{ url_for('static', filename='greenheart.jpg') }}" style="height:50px;display:inline-block;">
+					{% else %}
+					     <img src="{{ url_for('static', filename='emptyheart.png') }}" style="height:50px;display:inline-block;">
+					{% endif %}
 			</div>
 
 {% endblock %}
