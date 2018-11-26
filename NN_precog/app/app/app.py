@@ -13,3 +13,7 @@ def persistRun(runID):
 	# runID = precogRun()
 	result = requests.get('http://dblayer:80/persist/' + str(runID) )
 	# return ('', 204)
+
+@app.route('/heartbeat', methods=['GET'])
+def heartbeat():
+	return ('', 204)
