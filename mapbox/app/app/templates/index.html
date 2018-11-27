@@ -232,7 +232,7 @@
 			function filterBy(month, year) {
 				var dt = month + "-" + year
 			    var filters = ['==', 'date', dt];
-			    map.setFilter('precog_heatmap_2', filters);
+			    map.setFilter('precog_heatmap_' + document.getElementById("precog-select").value , filters);
 			}
 
 		    // Function to call to add layers
@@ -280,7 +280,7 @@
 					                ["linear"],
 					                ["get", "certainty"],
 					                0, 0,
-					                1200, 1
+					                127, 1
 					            ],
 					            "heatmap-opacity": [
 					                "interpolate",

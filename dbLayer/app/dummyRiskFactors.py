@@ -3,7 +3,7 @@ from geoalchemy2 import functions
 from geoalchemy2.types import Geometry
 import datetime
 from app import db
-from app.models import Recommendation, Prediction
+from app.models import Recommendation, Prediction, RiskFactorMetadata
 import geojson
 import random
 
@@ -20,7 +20,7 @@ import random
 # 	location = db.Column(Geometry('POINT'))
 
 def createDummyRiskFactors(num):
-	DT = datetime.datetime.now()
+    DT = datetime.datetime.now()
     countIndex = 0
     rfmeta = RiskFactorMetadata()
     rfmeta.fileName = "blargh.csv"
