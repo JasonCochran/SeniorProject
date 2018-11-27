@@ -92,13 +92,13 @@
 				month = parseInt(e.target.value, 10);
 				document.getElementById('month_val_disp').textContent = months[month];
 				// Every time we change update the data
-				filterBy(month, year);
+				filterBy(month + 1, year);
 			});
 			document.getElementById('year_val').addEventListener('input', function(e) {
 				year = parseInt(e.target.value, 10);
 				document.getElementById('year_val_disp').textContent = year;
 				// Every time we change update the data
-				filterBy(month, year);
+				filterBy(month + 1, year);
 			});
 
 			// Data view dropdown
