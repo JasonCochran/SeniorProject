@@ -82,18 +82,6 @@ class RecommendationProfile(db.Model):
 	# some squares we have) is >y distance from some item z we should
 	# say this area is prone to crime
 
-class RiskFactorMetadata(db.Model):
- 	_tablename_ = 'RiskFactorMetadata'
- 	id = db.Column(db.Integer, primary_key = True)
- 	fileName = db.Column(db.String(132))
-
-class RiskFactor(db.Model):
- 	_tablename_ = 'riskFactor'
- 	id = db.Column(db.Integer, primary_key = True)
- 	value = db.Column(db.Float)
- 	rfmetdata = db.Column(db.Integer, db.ForeignKey(RiskFactorMetadata.id))
- 	location = db.Column(Geometry('POINT'))
-
 # class SexOffenders(db.Model):
 
 # class Districts(db.Model):

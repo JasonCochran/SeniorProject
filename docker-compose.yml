@@ -9,6 +9,9 @@ services:
          - db_nw
       env_file:
          - env_file
+      volumes:
+         - pg_data:/var/lib/postgresql/data
+         - pg_config:/etc/postgresql/9.4/main/pg_hba.conf:z
    dblayer:
       build:
          context: dbLayer
@@ -34,6 +37,18 @@ services:
          - env_file
       volumes:
          - ./precog/app:/app
+   nn_precog:
+      build:
+         context: NN_precog
+      ports:
+         - "87:80"
+      restart: always
+      networks:
+         - db_nw
+      env_file:
+         - env_file
+      volumes:
+         - ./NN_precog/app:/app
    rec_eng:
       build:
          context: rec_eng
@@ -78,15 +93,9 @@ services:
          - db_nw
       volumes:
          - ./mapbox/app:/app
-   jupyter:
-      image: jupyter/datascience-notebook
-      ports:
-         - "8888:8888"
-      restart: always
-      networks:
-         - db_nw
-      env_file:
-         - env_file
 networks:
    db_nw:
       driver: bridge
+volumes:
+   pg_data:
+   pg_config:
